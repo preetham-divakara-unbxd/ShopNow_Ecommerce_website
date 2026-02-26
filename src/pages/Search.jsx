@@ -1,6 +1,6 @@
 import { SearchBox, Summary, Banner, Products, Image, Facets, RangeFacet, SelectedFacets, CheckboxFacet, MultilevelFacet, ProductViewRadioButtons, ProductViewButtons, PageSize, SortButtons, LoadMorePagination, FixedPagination, Breadcrumb } from "@unbxd-ui/react-search-components"
 // import { useProductView } from "@unbxd-ui/react-search-hooks";
-
+import { useOutletContext } from 'react-router';
 import SummaryComponent from '../components/SummaryComponent'
 import PaginationComponent from "../components/PaginationComponent";
 import PageSizeComponent from "../components/PageSizeComponent";
@@ -37,6 +37,7 @@ import Facets11 from "../usecases/facets/Facets11";
 import Facets12 from "../usecases/facets/Facets12";
 import Facets13 from "../usecases/facets/Facets13";
 import Facets14 from "../usecases/facets/Facets14";
+import PageSizeDropdown from "../usecases/pagesize/PageSizeDropdown";
 // import VisualSearchComponent from '../components/VisualSearchComponent';
 
 
@@ -98,7 +99,66 @@ const ProductHover = ({ product }) => {
 }
 
 function Search() {
+    const { activeUsecases } = useOutletContext();
 
+    const renderPagination = () => {
+        switch (activeUsecases.pagination) {
+            case 'LoadMore1': return <LoadMore1 />;
+            case 'LoadMore2': return <LoadMore2 />;
+            case 'LoadMore3': return <LoadMore3 />;
+            case 'FixedPagination1': return <FixedPagination1 />;
+            case 'FixedPagination2': return <FixedPagination2 />;
+            case 'FixedPagination3': return <FixedPagination3 />;
+            case 'FixedPagination4': return <FixedPagination4 />;
+            case 'FixedPagination5': return <FixedPagination5 />;
+            default: return <LoadMore1 />;
+        }
+    };
+    const renderPageSize = () => {
+        switch (activeUsecases.pageSize) {
+            case 'PageSizeDropdown': return <PageSizeDropdown />;
+            case 'PageSizePills': return <PageSizePills />;
+            case 'PageSizeRadiobuttons': return <PageSizeRadiobuttons />;
+
+            default: return <PageSizeDropdown />;
+        }
+    };
+
+    const renderSort = () => {
+        switch (activeUsecases.sorting) {
+            case 'SortDropdownComponent': return <SortDropdownComponent />;
+            case 'SortButtonsComponent': return <SortButtonsComponent />;
+            case 'SortRadiobuttonsComponent': return <SortRadiobuttonsComponent />;
+            case 'SortIconsComponent': return <SortIconsComponent />;
+
+            default: return <SortDropdownComponent />;
+        }
+    }
+
+    const renderProductView = () => {
+        switch (activeUsecases.productView) {
+            case 'ProductViewButtonsComponent': return <ProductViewButtonsComponent />;
+            case 'ProductViewDropdownComponent': return <ProductViewDropdownComponent />;
+            case 'ProductViewSMLComponent': return <ProductViewSMLComponent />;
+            default: return <ProductViewSMLComponent />;
+        }
+    };
+    const isDropdownFacet = ['Facets1', 'Facets2', 'Facets3', 'Facets4'].includes(activeUsecases.facets);
+
+    const renderFacets = () => {
+        switch (activeUsecases.facets) {
+            case 'Facets1': return <Facets1 />;
+            case 'Facets2': return <Facets2 />;
+            case 'Facets3': return <Facets3 />;
+            case 'Facets4': return <Facets4 />;
+            case 'Facets6': return <Facets6 />;
+            case 'Facets10': return <Facets10 />;
+            case 'Facets12': return <Facets12 />;
+            case 'Facets13': return <Facets13 />;
+            case 'Facets14': return <Facets14 />;
+            default: return <Facets14 />;
+        }
+    };
     return (
         <div className="search-page">
 
@@ -106,16 +166,16 @@ function Search() {
             {/* Search Content */}
             <div className="search-container">
 
-                {/* <div className="search-box-wrapper">
+                <div className="search-box-wrapper">
                     <SearchBox
                         showSubmitButton={true}
                         submitOnEnter={true}
                         debounce={true}
                         delay={300}
                         showClear={true}
-                    //    autosuggest={{ enabled: true }}
+                        autosuggest={{ enabled: true }}
                     />
-                </div> */}
+                </div>
                 <div className="breadcrumb-row">
                     {/* <Breadcrumb name="categoryPath" /> */}
                     <BreadcrumbComponent name="categoryPath" />
@@ -163,16 +223,19 @@ function Search() {
                         {/* <ProductViewComponent /> */}
                         {/* <ProductViewButtonsComponent /> */}
                         {/* <ProductViewDropdownComponent /> */}
-                        <ProductViewSMLComponent />
+                        {/* <ProductViewSMLComponent /> */}
 
                         {/* <FixedPagination1 /> */}
+                        {renderProductView()}
 
                     </div>
                     <div className="pagesize-control">
                         {/* <PageSize text={"Products per page:"} options={[12, 16, 24]} /> */}
-                        <PageSizeComponent />
+                        {/* <PageSizeComponent /> */}
+                        {/* <PageSizeDropdown /> */}
                         {/* <PageSizePills /> */}
                         {/* <PageSizeRadiobuttons /> */}
+                        {renderPageSize()}
                     </div>
                     <div className="sort-control">
                         {/* <SortButtons
@@ -192,9 +255,10 @@ function Search() {
                         /> */}
                         {/* <SortComponent /> */}
                         {/* <SortButtonsComponent /> */}
-                        <SortDropdownComponent />
+                        {/* <SortDropdownComponent /> */}
                         {/* <SortRadiobuttonsComponent /> */}
                         {/* <SortIconsComponent /> */}
+                        {renderSort()}
                     </div>
                 </div>
                 <div className="selected-facets-row">
@@ -235,7 +299,7 @@ function Search() {
                         showSelectedFacets={true}
                         // CustomComponent={FacetSwatch}
                     />  */}
-                    <Facets
+                    {/* <Facets
                         configs={{
                             defaultOpen: false,
                             renderAs: "dropdown",
@@ -251,14 +315,14 @@ function Search() {
                             viewMoreLimit: 4,
                             showRemainingNumber: true
                         }}
-                    />
+                    /> */}
                     {/* <FacetComponent /> */}
                     {/* <Facets1 /> */}
                     {/* <Facets4 /> */}
                     {/* <Facets2 /> */}
                     {/* <Facets3 /> */}
                     {/* <RangeFacet isMultiSlider={true} name="price" defaultOpen={false} renderAs="accordion" showSelectedFacets={true} /> */}
-                  
+                    {isDropdownFacet && renderFacets()}
 
 
 
@@ -277,7 +341,8 @@ function Search() {
                             {/* <Facets12 /> */}
 
                             {/* <Facets13/> */}
-                            <Facets14 />
+                            {/* <Facets14 /> */}
+                            {!isDropdownFacet && renderFacets()}
                         </div>
                         <div>
                             <Products ProductComponent={ProductHover} />
@@ -313,9 +378,10 @@ function Search() {
                         {/* for fixed pagination 6 is included inside  <FixedPagination1 /> */}
                         {/* for fixed pagination 7 uncomment <FixedPagination1 /> in product view */}
 
-                        <LoadMore1 />
+                        {/* <LoadMore1 /> */}
                         {/* <LoadMore2 /> */}
                         {/* <LoadMore3 /> */}
+                        {renderPagination()}
                     </div>
                 </div>
             </div>

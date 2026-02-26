@@ -2,8 +2,8 @@
   --primary-color: #007bff;
   --text-color: #333;
   --bg-color: #fff;
-  --spacing-md: 1rem;
-  --spacing-lg: 2rem;
+  --spacing-md: 0.5rem;
+  --spacing-lg: 1rem;
 }
 
 * {

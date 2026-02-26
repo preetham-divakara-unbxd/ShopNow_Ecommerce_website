@@ -7,11 +7,11 @@ const LoadMore1 = () => {
         isLastPage
     } = usePagination();
 
-    const { loading } = useProducts();
+    const { loading,numberOfProducts } = useProducts();
 
     console.log("Loading state in LoadMore1:", loading);
 
-    if (isLastPage()) {
+    if (isLastPage() || numberOfProducts === 0) {
         return null;
     }
 

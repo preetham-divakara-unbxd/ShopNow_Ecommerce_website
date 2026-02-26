@@ -1,10 +1,14 @@
-import { useFacets } from '@unbxd-ui/react-search-hooks';
+import { useFacets,useProducts } from '@unbxd-ui/react-search-hooks';
 import { useState } from 'react';
 //with range facet same as facet10
 const Facets14 = () => {
     const { facets, selectedFacets, addMultipleFacets, getFacetByName, clearFacet, removeFacet, addFacet } = useFacets();
     const [tempSelections, setTempSelections] = useState({});
+    const { numberOfProducts } = useProducts();
 
+     if(numberOfProducts === 0){
+        return null;
+    }
     // console.log("selected", selectedFacets);
     const handleTempSelection = (facetName, value, checked) => {
         const isRangeValue = typeof value === 'object' && value !== null && value.start !== undefined && value.end !== undefined;

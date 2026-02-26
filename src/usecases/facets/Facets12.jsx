@@ -95,6 +95,9 @@ const Facets12 = () => {
                     if (!facet || !facet.values) {
                         return null;
                     }
+                    if(facet.type === 'multilevel') {
+                        return null;
+                    }
                     const isRangeFacet = facet.type === 'range';
                     const selectedValues = selectedFacets[facetName]?.values || [];
                     const hasSelectedValues = selectedValues.length > 0;

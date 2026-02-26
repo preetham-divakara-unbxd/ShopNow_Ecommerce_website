@@ -3,7 +3,7 @@ import { useState } from 'react';
 import RangeFacetComponent from './RangeFacetComponent';
 
 
-//with range facet same as facet10 with rangeacetcomponent
+//with range facet same as facet10 with rangeacetcomponent(slider)
 const Facets13 = () => {
     const { facets, selectedFacets, addMultipleFacets, getFacetByName, clearFacet } = useFacets();
     const [tempSelections, setTempSelections] = useState({});
@@ -68,6 +68,10 @@ const Facets13 = () => {
                     if (!facet || !facet.values) {
                         return null;
                     }
+                     if(facet.type === 'multilevel') {
+                        return null;
+                    }
+                    
                     const isRangeFacet = facet.type === 'range';
                     const selectedValues = selectedFacets[facetName]?.values || [];
                     const hasSelectedValues = selectedValues.length > 0;

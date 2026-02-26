@@ -1,14 +1,23 @@
 import { Routes, Route ,Outlet,useNavigate} from 'react-router'
 import { UnbxdSearchCSRWrapper } from "@unbxd-ui/react-search-hooks"
+import { useState } from 'react'
 import Home from './pages/Home'
 import Search from './pages/Search'
 import Header from './components/Header'
 
 function Layout() {
+  
+   const [activeUsecases, setActiveUsecases] = useState({
+    pagination: 'LoadMore1',
+    sorting: 'SortDropdownComponent',
+    facets: 'Facets14',
+    pageSize: 'PageSizeDropdown',
+    productView: 'ProductViewSMLComponent'
+  });
   return (
     <>
-      <Header />
-      <Outlet /> 
+      <Header activeUsecases={activeUsecases} setActiveUsecases={setActiveUsecases} />
+      <Outlet context={{ activeUsecases }}/> 
     </>
   )
 }

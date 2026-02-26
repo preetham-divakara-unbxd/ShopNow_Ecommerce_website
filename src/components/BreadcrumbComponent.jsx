@@ -10,10 +10,12 @@ const BreadcrumbComponent = ({ name }) => {
     const handleBreadcrumbClick = (level) => {
         setBreadcrumb(name, breadcrumbs.slice(0, level + 1))
     }
-
+    if (!breadcrumbs || breadcrumbs.length === 0) {
+        return null;
+    }
     return (
         <div className="breadcrumb-container">
-            {breadcrumbs.length > 0 ? (
+            
                 <div className="breadcrumb-text">
                     <span className="breadcrumb-label">Category:</span>
                     {breadcrumbs.map((breadcrumb, index) => (
@@ -30,9 +32,7 @@ const BreadcrumbComponent = ({ name }) => {
                         </span>
                     ))}
                 </div>
-            ) : (
-                <p>No breadcrumbs available</p>
-            )}
+         
         </div>
     );
 };
