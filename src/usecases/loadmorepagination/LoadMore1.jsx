@@ -9,7 +9,7 @@ const LoadMore1 = () => {
 
     const { loading,numberOfProducts } = useProducts();
 
-    console.log("Loading state in LoadMore1:", loading);
+    //console.log("Loading state in LoadMore1:", loading);
 
     if (isLastPage() || numberOfProducts === 0) {
         return null;

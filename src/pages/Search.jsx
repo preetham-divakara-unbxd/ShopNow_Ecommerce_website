@@ -1,4 +1,4 @@
-import { SearchBox, Summary, Banner, Products, Image, Facets, RangeFacet, SelectedFacets, CheckboxFacet, MultilevelFacet, ProductViewRadioButtons, ProductViewButtons, PageSize, SortButtons, LoadMorePagination, FixedPagination, Breadcrumb } from "@unbxd-ui/react-search-components"
+import { SearchBox, Summary, Banner, Products, Image, Facets, RangeFacet, SelectedFacets, CheckboxFacet, MultilevelFacet, ProductViewRadioButtons, ProductViewButtons, PageSize, SortButtons, LoadMorePagination, FixedPagination, InfiniteScrollPagination, Breadcrumb } from "@unbxd-ui/react-search-components"
 // import { useProductView } from "@unbxd-ui/react-search-hooks";
 import { useOutletContext } from 'react-router';
 import SummaryComponent from '../components/SummaryComponent'
@@ -38,6 +38,9 @@ import Facets12 from "../usecases/facets/Facets12";
 import Facets13 from "../usecases/facets/Facets13";
 import Facets14 from "../usecases/facets/Facets14";
 import PageSizeDropdown from "../usecases/pagesize/PageSizeDropdown";
+import RefreshButton from "../components/RefreshButton";
+import InfiniteScroll1 from "../usecases/loadmorepagination/InfiniteScroll1";
+import Counter from "../usecases/loadmorepagination/Counter";
 // import VisualSearchComponent from '../components/VisualSearchComponent';
 
 
@@ -56,6 +59,8 @@ import "@unbxd-ui/react-search-components/styles/banner.css";
 import "@unbxd-ui/react-search-components/styles/breadcrumb.css";
 import "@unbxd-ui/react-search-components/styles/multilevelFacet.css";
 import "@unbxd-ui/react-search-components/styles/selectedFacets.css";
+import "@unbxd-ui/react-search-components/styles/infiniteScrollPagination.css";
+import { useEffect,useState } from "react";
 // require.resolve("@unbxd-ui/react-search-components/styles/loadMorePagination.css");
 
 const LoaderComponent = ({ className }) => {
@@ -76,30 +81,46 @@ const LoaderComponent3 = ({ className }) => {
     </div>
 };
 const ProductHover = ({ product }) => {
-    const { idx, uniqueId, title, price, imageUrl } = product;
-    // console.log(product);
-    // console.log(idx, uniqueId, title, price, imageUrl);
+    const { idx, uniqueId, title, price, imageUrl, variants } = product;
+    const [activeImage, setActiveImage] = useState(imageUrl?.[0]);
 
     return (
         <div
             data-prank={idx}
             key={uniqueId}
             className="product-card"
-            onClick={(event) => {
-                event.stopPropagation();
-            }}
-            style={{ cursor: "pointer" }}>
-            <Image imageUrl={imageUrl[0]} hoverImageUrl={imageUrl[0]} />
+            onClick={(e) => e.stopPropagation()}
+            style={{ cursor: "pointer" }}
+        >
+            <Image imageUrl={activeImage} hoverImageUrl={activeImage} />
+
             <div className="product-description">
                 <h3 className="product-title">{title}</h3>
                 <div className="product-price">${price}</div>
+                {variants && variants.length > 0 && (
+                    <div className="variant-thumbnails">
+                       
+                        {variants.map((variant, i) => (
+                            <img
+                                key={i}
+                                src={variant.v_imageUrl?.[0]}
+                                onClick={() => setActiveImage(variant.v_imageUrl?.[0])}
+                                className={activeImage === variant.v_imageUrl?.[0] ? 'active' : ''}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
-}
+};
 
 function Search() {
     const { activeUsecases } = useOutletContext();
+
+useEffect(()=>{
+ console.log("triggered");
+},[])
 
     const renderPagination = () => {
         switch (activeUsecases.pagination) {
@@ -111,6 +132,7 @@ function Search() {
             case 'FixedPagination3': return <FixedPagination3 />;
             case 'FixedPagination4': return <FixedPagination4 />;
             case 'FixedPagination5': return <FixedPagination5 />;
+            case 'InfiniteScroll1': return <InfiniteScroll1 />;
             default: return <LoadMore1 />;
         }
     };
@@ -167,6 +189,8 @@ function Search() {
             <div className="search-container">
 
                 <div className="search-box-wrapper">
+                    <Counter />
+                    <RefreshButton />
                     <SearchBox
                         showSubmitButton={true}
                         submitOnEnter={true}
@@ -182,8 +206,8 @@ function Search() {
                 </div>
 
                 <div className="results-count-row">
-                    <SummaryComponent />
-                    {/* <Summary /> */}
+                    {/* <SummaryComponent /> */}
+                    <Summary />
                     {/* <RefreshButton /> */}
                 </div>
                 {/* <div className="visual-search-row">
@@ -345,12 +369,22 @@ function Search() {
                             {!isDropdownFacet && renderFacets()}
                         </div>
                         <div>
+                            {/* <InfiniteScrollPagination LoaderComponent={LoaderComponent3} styles={{ wrapper: "infinite-scroll-pagination-wrapper", preLoader: "loader", postLoader: "loader" }}> 
                             <Products ProductComponent={ProductHover} />
+                             </InfiniteScrollPagination> */}
+
+                            {/* <InfiniteScroll1> */}
+                                <Products ProductComponent={ProductHover} />
+                            {/* </InfiniteScroll1> */}
+
                         </div>
                     </div>
 
                     <div className="pagination-wrapper">
                         {/* <PaginationComponent /> */}
+
+                        {/* <InfiniteScrollPagination LoaderComponent={LoaderComponent3} styles={{ wrapper: "infinite-scroll-pagination-wrapper", preLoader: "loader", postLoader: "loader" }}/> */}
+                 
 
                         {/* <LoadMorePagination LoaderComponent={LoaderComponent3} >
                             <Products ProductComponent={ProductHover} />
@@ -381,6 +415,7 @@ function Search() {
                         {/* <LoadMore1 /> */}
                         {/* <LoadMore2 /> */}
                         {/* <LoadMore3 /> */}
+                          {/* <InfiniteScroll1/> */}
                         {renderPagination()}
                     </div>
                 </div>

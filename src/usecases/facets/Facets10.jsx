@@ -5,7 +5,7 @@ const Facets10 = () => {
     const { facets, selectedFacets, addMultipleFacets, getFacetByName, clearFacet } = useFacets();
     const [tempSelections, setTempSelections] = useState({});
 
-    console.log("selected", selectedFacets);
+    //console.log("selected", selectedFacets);
     const handleTempSelection = (facetName, value, checked) => {
         setTempSelections(prev => {
             const current = prev[facetName] || [];
@@ -30,21 +30,29 @@ const Facets10 = () => {
         clearFacet(); 
         setTempSelections({});
     };
-    console.log("object keys:", Object.keys(facets)); 
+    //console.log("object keys:", Object.keys(facets)); 
+    const hasPendingSelections = Object.values(tempSelections).some(values => values.length > 0);
+    const hasAppliedFacets = Object.keys(selectedFacets).length > 0;
+
     return (
         <div className="multi-select-facets">
+            <div className="facets10-filters-heading">Filters</div>
             <div className="facet-actions">
-                <button onClick={applyAllFilters}>Apply All Filters</button>
-                <button onClick={clearAllFilters}>Clear All</button>
+                {hasPendingSelections && (
+                    <button className="facets10-apply-btn" onClick={applyAllFilters}>Apply Filters</button>
+                )}
+                {hasAppliedFacets && (
+                    <button className="facets10-clear-btn" onClick={clearAllFilters}>Clear All</button>
+                )}
             </div>
 
             {(facets?.text?.list || []).map(facetKey => {
                 // const facet = facets[facetKey];
-                console.log("facetkey:", facetKey);
+                //console.log("facetkey:", facetKey);
                 const facetName = facetKey.facetName || facetKey.filterField;
-                console.log("facetname:", facetName);
+                //console.log("facetname:", facetName);
                 const facet = getFacetByName(facetName);
-                console.log("facet:", facet);
+                //console.log("facet:", facet);
                 const selectedValues = selectedFacets[facetName]?.values || [];
                 const hasSelectedValues = selectedValues.length > 0;
 

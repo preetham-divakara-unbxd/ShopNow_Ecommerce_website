@@ -13,10 +13,10 @@ const SearchComponent = ({ autosuggest }) => {
     const { autosuggestQuery, setAutosuggestQuery } = useAutosuggest(autosuggest);
 
 
-    console.log("Hook returns:", autosuggestHookData);
-    console.log("Config has:", autosuggest);
-    // console.log("AutosuggestComponent:", AutosuggestComponent);
-    console.log("useAutosuggest:", useAutosuggest);
+    //console.log("Hook returns:", autosuggestHookData);
+    //console.log("Config has:", autosuggest);
+    // //console.log("AutosuggestComponent:", AutosuggestComponent);
+    //console.log("useAutosuggest:", useAutosuggest);
 
 
     // const handleInputChange = (event) => {

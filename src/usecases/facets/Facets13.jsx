@@ -8,7 +8,7 @@ const Facets13 = () => {
     const { facets, selectedFacets, addMultipleFacets, getFacetByName, clearFacet } = useFacets();
     const [tempSelections, setTempSelections] = useState({});
 
-    console.log("selected", selectedFacets);
+    //console.log("selected", selectedFacets);
     const handleTempSelection = (facetName, value, checked) => {
         setTempSelections(prev => {
             const current = prev[facetName] || [];
@@ -45,25 +45,26 @@ const Facets13 = () => {
         clearFacet(); 
         setTempSelections({});
     };
-    console.log("object keys:", Object.keys(facets));
+    //console.log("object keys:", Object.keys(facets));
     return (
         <div className="multi-select-facets">
+            <div className="facets10-filters-heading">Filters</div>
             <div className="facet-actions">
-                <button onClick={applyAllFilters}>Apply All Filters</button>
-                <button onClick={clearAllFilters}>Clear All</button>
+                <button className="facets10-apply-btn" onClick={applyAllFilters}>Apply Filters</button>
+                <button className="facets10-clear-btn" onClick={clearAllFilters}>Clear All</button>
             </div>
 
             {Object.keys(facets).map(facetKey => {
                 const facetkey = facets[facetKey];
-                console.log("facets[facetKey]", facetkey);
+                //console.log("facets[facetKey]", facetkey);
                 const facetList = facets[facetKey]?.list || [];
 
-                console.log("facetList:", facetList);
+                //console.log("facetList:", facetList);
                 return facetList.map(facetItem => {
                     const facetName = facetItem.facetName || facetItem.filterField;
                     const facet = getFacetByName(facetName);
-                    console.log("facet:", facet);
-                    console.log("facetName", facetName);
+                    //console.log("facet:", facet);
+                    //console.log("facetName", facetName);
 
                     if (!facet || !facet.values) {
                         return null;

@@ -8,17 +8,17 @@ const RangeFacetComponent = ({ facetName, facet, fireImmediate = false }) => {
     const [minValue, setMinValue] = useState('');
     const [maxValue, setMaxValue] = useState('');
 
-    console.log("facetStats", stats);
-    // console.log("facet", facet);
-    // console.log("facetName", facetName);
+    //console.log("facetStats", stats);
+    // //console.log("facet", facet);
+    // //console.log("facetName", facetName);
  
 
     const facetStats = stats?.[facetName] || { min: facet?.start || 0, max: facet?.end || 1000 };
-    console.log("facetStats", facetStats);
+    //console.log("facetStats", facetStats);
 
     const selectedRange = selectedFacets?.[facetName]?.values?.[0];
 
-    console.log("selectedRange", selectedRange);
+    //console.log("selectedRange", selectedRange);
 
      const [minSlider, setMinSlider] = useState(facetStats.min);
      const [maxSlider, setMaxSlider] = useState(facetStats.max);

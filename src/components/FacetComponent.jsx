@@ -25,8 +25,8 @@ const FacetComponent = () => {
         });
     };
 
-    console.log("facets", facets);
-    console.log("stats:", stats);
+    //console.log("facets", facets);
+    //console.log("stats:", stats);
     return (
         <div style={{ display: "grid", gap: "10px", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))" }}>
             {/* Basic facet display */}

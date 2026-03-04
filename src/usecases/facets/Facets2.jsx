@@ -44,24 +44,24 @@ const Facets2 = () => {
                display.includes('color') || display.includes('colour');
     };
 
-    console.log("facets", facets);
-    console.log("stats:", stats);
+    //console.log("facets", facets);
+    //console.log("stats:", stats);
     
     return (
         <>
             {(facets?.text?.list || []).map(textFacet => {
                 const facetName = textFacet.facetName || textFacet.filterField;
-                console.log("facetName:", facetName);
+                //console.log("facetName:", facetName);
                 const searchStr = searchInputs[facetName] || '';
                 const facet = getFacetByName(facetName, searchStr);
                 
-                console.log("facet(getfacetByName):",facet);
+                //console.log("facet(getfacetByName):",facet);
                 const isOpen = openDropdowns[facetName] || false;
                 const selectedValues = selectedFacets[facetName]?.values || [];
                 const hasSelectedValues = selectedValues.length > 0;
                 const isColor = isColorFacet(facetName, facet?.displayName);
 
-                console.log("isColor:", isColor, "facetName:", facetName, "displayName:", facet?.displayName);
+                //console.log("isColor:", isColor, "facetName:", facetName, "displayName:", facet?.displayName);
 
                 return (
                     <div className="UNX-dropdown facets-root" key={facetName}>

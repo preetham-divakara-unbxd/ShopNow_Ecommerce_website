@@ -27,8 +27,8 @@ const Facets4 = () => {
             [facetName]: value
         }));
     };
-    console.log("facets", facets);
-    console.log("stats:", stats);
+    //console.log("facets", facets);
+    //console.log("stats:", stats);
     return (
         <>
             {/* Basic facet display */}
@@ -43,8 +43,8 @@ const Facets4 = () => {
                   
                 const selectedValues = selectedFacets[facetName]?.values || [];
                 const hasSelectedValues = selectedValues.length > 0;
-                //   console.log("selectedValues:", selectedValues);
-                //   console.log("hasSelectedValues:", hasSelectedValues);
+                //   //console.log("selectedValues:", selectedValues);
+                //   //console.log("hasSelectedValues:", hasSelectedValues);
 
                 return (
                     <div 

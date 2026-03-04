@@ -28,7 +28,7 @@ const FixedPagination1 = () => {
     let pages = Math.min(totalPages, pageLimit);
     let startPoint = 1;
     // let startPoint = Math.max(1, currentPage - Math.floor(pageLimit / 2));
-    // console.log("startPoint before adjustment:", startPoint, "currentPage:", currentPage, "totalPages:", totalPages);
+    // //console.log("startPoint before adjustment:", startPoint, "currentPage:", currentPage, "totalPages:", totalPages);
 
     // Adjust if we're near the end
     // if (startPoint + pages - 1 > totalPages) {

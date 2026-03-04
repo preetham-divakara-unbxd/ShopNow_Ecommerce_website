@@ -8,7 +8,7 @@ const LoadMore1 = () => {
     } = usePagination();
     const { loading, products, numberOfProducts } = useProducts();
 
-    // console.log("Loading state in LoadMore1:", loading);
+    // //console.log("Loading state in LoadMore1:", loading);
 
     const currentShown = products.length;
     const progressPercent = numberOfProducts > 0

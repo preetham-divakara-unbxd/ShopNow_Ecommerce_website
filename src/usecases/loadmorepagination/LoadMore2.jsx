@@ -9,8 +9,8 @@ const LoadMore2 = () => {
 
     const { loading, products , numberOfProducts} = useProducts();
 
-    // console.log("Loading state in LoadMore2:", loading);
-    // console.log("Products in LoadMore2:", products);
+    // //console.log("Loading state in LoadMore2:", loading);
+    // //console.log("Products in LoadMore2:", products);
     const currentShown = products.length;
 
     if (isLastPage()) {

@@ -1,7 +1,8 @@
 :root {
   --primary-color: #007bff;
   --text-color: #333;
-  --bg-color: #fff;
+  /* --bg-color: #fff; */
+   --bg-color: white;
   --spacing-md: 0.5rem;
   --spacing-lg: 1rem;
 }
@@ -16,6 +17,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   color: var(--text-color);
   background-color: var(--bg-color);
+    /* --tw-bg-opacity: 1; */
+  /* background-color: rgba(255, 255, 255, var(--tw-bg-opacity)); */
   line-height: 1.6;
 }
 

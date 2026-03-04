@@ -1,6 +1,6 @@
 import { useQuery } from "@unbxd-ui/react-search-hooks";
 import { useProducts } from "@unbxd-ui/react-search-hooks";
-import RefreshButton from "./RefreshButton";
+// import RefreshButton from "./RefreshButton";
 
 const SummaryComponent = () => {
     const { query } = useQuery();
@@ -26,7 +26,7 @@ const SummaryComponent = () => {
                 </div>
             )}
             <div className="spellcheck-summary">
-                {pageStart} - {pageEnd} of {numberOfProducts} products <RefreshButton />
+                {pageStart} - {pageEnd} of {numberOfProducts} products 
             </div>
         </div>
     );

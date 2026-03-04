@@ -5,7 +5,7 @@ const PageSizeComponent = () => {
 	
 	const handlePageSizeChange = (pageSizeValue) => {
         const numericValue = Number(pageSizeValue);
-        console.log("pageSizeValue:", pageSizeValue, "numericValue:", numericValue);
+        //console.log("pageSizeValue:", pageSizeValue, "numericValue:", numericValue);
 		setPageSize(numericValue);  // ✅ Pass number, not string
 		// setPageSize(12);   // some external code chnage 
 	};
@@ -18,7 +18,7 @@ const PageSizeComponent = () => {
 					id="pageSize"
                     value={pageSize}
 					onChange={(event) => {
-                        console.log("event:", event);
+                        //console.log("event:", event);
 						handlePageSizeChange(event.target.value);
 					}}>
 					<option value={12}>12</option>

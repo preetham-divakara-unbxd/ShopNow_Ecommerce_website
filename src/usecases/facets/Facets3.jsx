@@ -63,8 +63,8 @@ const Facets3 = () => {
                display.includes('brand') || display.includes('manufacturer');
     };
 
-    console.log("facets", facets);
-    console.log("stats:", stats);
+    //console.log("facets", facets);
+    //console.log("stats:", stats);
     
     return (
         <>

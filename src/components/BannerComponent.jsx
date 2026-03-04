@@ -4,7 +4,7 @@ import { useBanner } from "@unbxd-ui/react-search-hooks";
  
 const BannerComponent = () => {
     const { banners, onBannerClick } = useBanner();
-    console.log("banners:", banners);
+    // //console.log("banners:", banners);
     return (
         <div className="banners-container">
             {banners.map((banner, index) => (

@@ -22,8 +22,8 @@ const Facets1 = () => {
         });
     };
 
-    console.log("facets", facets);
-    console.log("stats:", stats);
+    //console.log("facets", facets);
+    //console.log("stats:", stats);
     return (
         <>
             {/* Basic facet display */}

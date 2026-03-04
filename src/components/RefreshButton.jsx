@@ -8,9 +8,9 @@ const RefreshButton = () => {
     };
  
     return (
-        <button onClick={handleRefresh} title="Refresh results">
-            🔄 
-        </button>
+        <button className="refresh-btn" onClick={handleRefresh} title="Refresh results">
+        ↻
+       </button>
     );
 };
 

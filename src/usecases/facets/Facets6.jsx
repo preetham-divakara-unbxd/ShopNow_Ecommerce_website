@@ -2,7 +2,7 @@ import { useFacets } from '@unbxd-ui/react-search-hooks';
 import { useState } from 'react';
 
 const Facets6 = () => {
-    const { facets, stats, selectedFacets, getFacetByName, addFacet, removeFacet } = useFacets();
+    const { facets, selectedFacets, getFacetByName, addFacet, removeFacet } = useFacets();
 
     const [searchInputs, setSearchInputs] = useState({});
 
@@ -12,25 +12,37 @@ const Facets6 = () => {
             [facetName]: value
         }));
     };
+    const [openFacets, setOpenFacets] = useState({});
+    const toggleFacet = (facetName) => {
+        setOpenFacets(prev => ({
+            ...prev,
+            [facetName]: !prev[facetName]
+        }));
+    };
+    // //console.log("facets", facets);
+    // //console.log("stats:", stats);
 
-    console.log("facets", facets);
-    console.log("stats:", stats);
     
     return (
         <div className="facets-sidebar">
+            <div className="facets6-filters-heading">Filters</div>
             {(facets?.text?.list || []).map(textFacet => {
                 const facetName = textFacet.facetName || textFacet.filterField;
                 const searchStr = searchInputs[facetName] || '';
                 const facet = getFacetByName(facetName, searchStr);
                 const selectedValues = selectedFacets[facetName]?.values || [];
                 const hasSelectedValues = selectedValues.length > 0;
-
+                const isOpen = openFacets[facetName] ?? false; 
                 return (
                     <div className="UNX-dropdown facets-root" key={facetName}>
-                        <div className="UNX-dropdown-activator facets-header">
+                        <div className="UNX-dropdown-activator facets-header"
+                        onClick={() => toggleFacet(facetName)}
+                        style={{ cursor: 'pointer' }}
+                        >
                             <div className='facets-displayName'>{facet.displayName}</div>
                             <div className='facets-icon'>⌄</div>
                         </div>
+                        {isOpen && (
                         <div className="UNX-dropdown-body facets-body" style={{ left: "0px", position: "relative" }}>
                             {hasSelectedValues && (
                                 <div className="facet-selected-values">
@@ -68,6 +80,7 @@ const Facets6 = () => {
                                 </div>
                             ))}
                         </div>
+                        )}
                     </div>
                 );
             })}

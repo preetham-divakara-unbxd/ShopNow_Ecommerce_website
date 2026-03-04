@@ -1,17 +1,14 @@
-/* ============================================
-   1. HEADER STYLES (Shared across all pages)
-   ============================================ */
-/* Header with SearchBox - Updated */
+
 .search-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: white;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #eee;
   padding: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
   width: 100%;
 }
 
@@ -21,7 +18,6 @@
   padding: 0.5rem 1rem;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  /* Changed: logo (minimal), search (takes all space), right (minimal) */
   align-items: center;
   gap: 0.75rem;
 }
@@ -213,7 +209,8 @@
 /* Search Page Styles */
 .search-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
+  /* background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%); */
+  background-color: transparent;
 }
 
 
@@ -226,40 +223,129 @@
 
 /* Search Box Styling */
 .search-box-wrapper {
-  
+  margin-bottom: 0.5rem;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-box-wrapper .searchbox-root {
+  flex: 1;
+  min-width: 0;
+}
+.refresh-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #d5d5d5;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+  background-color: #f5f5f5;
+  color: #111;
+  border-color: #999;
+}
+/* .search-box-wrapper {
   margin-bottom: 0.5rem;
   max-width: 600px;
   margin-left: auto;
   margin-right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+} */
+/* Product Card */
+.product-card {
+    border: 1px solid #d5d5d5 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    padding: 0 !important;
 }
 
+.product-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-2px);
+}
+
+.product-container .product-card .main-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 220px;
+    min-height: 220px;
+    padding: 12px;
+    background-color: #fafafa;
+}
+
+.product-description {
+    padding: 12px 14px;
+    text-align: left;
+    border-top: 1px solid #f0f0f0;
+}
+
+.product-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 6px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
 .results-count-row .spellcheck-wrapper {
   margin: 0;
 }
-/* Row 2: Results Count */
-/* .results-count-row .spellcheck-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 1rem;
-}
-  
 
-.spellcheck-wrapper .spellcheck-text {
-    font-size: 16px;
-    color: #2d2d2d;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}  */
+
+.spellcheck-wrapper{
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
 .controls-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 5px;
+  padding: 8px 12px;
   margin-bottom: 0.5rem;
   flex-wrap: wrap;
   gap: 0.5rem;
+  background-color: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+}
+
+.controls-row .view-control,
+.controls-row .pagesize-control,
+.controls-row .sort-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #444;
 }
 
 .view-option-container .view-option.selected {
@@ -848,8 +934,9 @@
     width: 250px;
     min-width: 250px;
     background-color: #fff;
-    border-right: 1px solid #e0e0e0;
-    padding: 5px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 8px;
     overflow-y: auto;
     height: calc(100vh - 80px);
     position: sticky;
@@ -858,19 +945,114 @@
     align-self: flex-start;
 }
 
+/* Facets6 - Filters heading */
+.facets6-filters-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    padding: 4px 4px 10px;
+    border-bottom: 2px solid #1a1a1a;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+}
 
 .facets-sidebar .facets-root {
-    margin-bottom: 8px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.facets-sidebar .facets-root:last-child {
+    border-bottom: none;
+}
+
+/* Facet header (accordion toggle) */
+.facets-sidebar .facets-root .facets-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 4px;
+    cursor: pointer;
+}
+
+.facets-sidebar .facets-root .facets-displayName {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.facets-sidebar .facets-root .facets-icon {
+    font-size: 14px;
+    color: #888;
 }
 
 .facets-sidebar .facets-body {
-    display: block !important; /* Always show - override any display:none */
-    position: relative !important; /* Override absolute positioning */
+    display: block !important; 
+    position: relative !important;
     left: 0 !important;
     top: 0 !important;
     width: 100%;
+    padding: 0 4px 10px;
 }
 
+/* Selected values box */
+.facets-sidebar .facet-selected-values {
+    background-color: #f0f6ff;
+    border: 1px solid #d0e2ff;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.facets-sidebar .facet-selected-values .selected-label {
+    font-weight: 600;
+    color: #0055b3;
+    margin-right: 4px;
+}
+
+.facets-sidebar .facet-selected-values .selected-values-text {
+    color: #444;
+}
+
+/* Search box inside facet */
+.facets-sidebar .facet-search-box {
+    padding: 0;
+    margin-bottom: 8px;
+    border-bottom: none;
+}
+
+.facets-sidebar .facet-search-box input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.facets-sidebar .facet-search-box input:focus {
+    outline: none;
+    border-color: #0066cc;
+    background-color: #fff;
+}
+
+/* Checkbox options */
+.facets-sidebar .checkbox-root {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 2px;
+    font-size: 13px;
+    color: #444;
+    cursor: pointer;
+}
+
+.facets-sidebar .checkbox-root:hover {
+    color: #111;
+}
 /* --apply buttons-- */
 /* Facet Apply Buttons */
 .facet-apply-buttons {
@@ -923,42 +1105,65 @@
     flex-shrink: 0;
     height: calc(100vh - 80px);
     overflow-y: auto;
-    padding: 5px;
-    border: 1px solid #e0e0e0; /* Border for whole container */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Facets10 - Filters heading */
+.facets10-filters-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    padding: 4px 4px 10px;
+    border-bottom: 2px solid #1a1a1a;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
 }
 
 /* Facet Actions (Apply All / Clear All buttons) */
 .facet-actions {
     display: flex;
     gap: 8px;
-    padding: 8px 0;
+    padding: 0 4px 10px;
     margin-bottom: 8px;
-    border-bottom: 1px solid #e0e0e0;
+
 }
 
-.facet-actions button {
-    padding: 8px 0;
+.facets10-apply-btn {
+    flex: 1;
+    padding: 7px 14px;
+    background-color: #1a1a1a;
+    color: #fff;
     border: none;
-    background: none;
-    font-size: 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.facets10-apply-btn:hover {
+    background-color: #333;
+}
+
+.facets10-clear-btn {
+    padding: 7px 14px;
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    color: #333;
-    text-decoration: none;
     transition: all 0.2s ease;
-    position: relative;
 }
 
-.facet-actions button:first-child {
-    color: #0066cc;
-}
-
-.facet-actions button:hover {
-    text-decoration: underline;
-}
-
-.facet-actions button:first-child:hover {
-    color: #0052a3;
+.facets10-clear-btn:hover {
+    border-color: #999;
+    color: #222;
 }
 
 /* Facet Group (Accordion Block) */
@@ -967,6 +1172,31 @@
     border: 1px solid #e0e0e0;
     background-color: #fff;
     overflow: hidden;
+}
+
+.facet-group .facets-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.facet-group .facets-displayName {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.facet-group .facets-icon {
+    font-size: 14px;
+    color: #888;
+    flex-shrink: 0;
 }
 
 .facet-group h3 {
@@ -1113,16 +1343,16 @@
   display: flex;
   gap: 5px;
   margin-bottom: 10px;
-  width: 100%; /* Ensure it doesn't exceed container */
-  box-sizing: border-box; /* Include padding in width */
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
 .price-range-facet-input input[type="number"] {
   flex: 1;
-  min-width: 0; /* Allow flex items to shrink below content size */
+  min-width: 0; 
   padding: 5px;
   border: 1px solid #ddd;
-  box-sizing: border-box; /* Include padding and border in width */
+  box-sizing: border-box;
   width: 100%; 
 }
 
@@ -1256,15 +1486,18 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+
+
 }
+
 
 .multilevel-facet-item:hover {
-  color: #000;
-  background-color: #f5f5f5;
+  font-weight: 600;
 }
 
+
 .multilevel-facet-item.selected {
-  background-color: #f0f0f0;
+  font-weight: 600;
 }
 
 /* Ensure child elements don't block clicks */
@@ -1286,6 +1519,10 @@
   font-size: 14px;
   color: #333;
   pointer-events: none;
+   overflow: hidden;      
+  text-overflow: ellipsis;
+   white-space: nowrap;       /* ← MISSING: forces single line */
+
 }
 
 .multilevel-label.bold {
@@ -1423,6 +1660,26 @@
 .usecase-dropdown-rich-item.active .item-desc {
   color: rgba(255, 255, 255, 0.7);
 }
+
+
+.variant-thumbnails {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+}
+.variant-thumbnails img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.variant-thumbnails img.active {
+  border: 2px solid #007aff;
+}
+
+
 @media (max-width: 768px) {
   .header-content {
     display: flex;

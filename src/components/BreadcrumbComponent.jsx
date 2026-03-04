@@ -4,7 +4,7 @@ import { useBreadcrumb } from "@unbxd-ui/react-search-hooks";
 const BreadcrumbComponent = ({ name }) => {
     const { breadcrumbs, setBreadcrumb } = useBreadcrumb({ name: "categoryPath" });
     
-    console.log("breadcrumbs:", breadcrumbs);
+    // //console.log("breadcrumbs:", breadcrumbs);
 
 
     const handleBreadcrumbClick = (level) => {
@@ -43,7 +43,7 @@ const BreadcrumbComponent = ({ name }) => {
 const BreadcrumbComponent = ({ name }) => {
     const { breadcrumbs, setBreadcrumb } = useBreadcrumb({ name: "categoryPath" });
     
-    console.log("breadcrumbs:", breadcrumbs);
+    //console.log("breadcrumbs:", breadcrumbs);
     const handleBreadcrumbClick = (level) => {
         setBreadcrumb(name, breadcrumbs.slice(0, level + 1))
     }

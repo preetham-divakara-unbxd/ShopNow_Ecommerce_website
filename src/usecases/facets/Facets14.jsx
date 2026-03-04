@@ -6,10 +6,18 @@ const Facets14 = () => {
     const [tempSelections, setTempSelections] = useState({});
     const { numberOfProducts } = useProducts();
 
+    const [openFacets, setOpenFacets] = useState({});
+    const toggleFacet = (facetName) => {
+        setOpenFacets(prev => ({
+            ...prev,
+            [facetName]: !prev[facetName]
+        }));
+    };
+
      if(numberOfProducts === 0){
         return null;
     }
-    // console.log("selected", selectedFacets);
+    // //console.log("selected", selectedFacets);
     const handleTempSelection = (facetName, value, checked) => {
         const isRangeValue = typeof value === 'object' && value !== null && value.start !== undefined && value.end !== undefined;
         if (!checked) {
@@ -77,24 +85,31 @@ const Facets14 = () => {
         clearFacet();
         setTempSelections({});
     };
-    console.log("object keys:", Object.keys(facets));
+    //console.log("object keys:", Object.keys(facets));
+    const hasPendingSelections = Object.values(tempSelections).some(values => values.length > 0);
+    const hasAppliedFacets = Object.keys(selectedFacets).length > 0;
     return (
         <div className="multi-select-facets">
+            <div className="facets10-filters-heading">Filters</div>
             <div className="facet-actions">
-                <button onClick={applyAllFilters}>Apply All Filters</button>
-                <button onClick={clearAllFilters}>Clear All</button>
+                {hasPendingSelections && (
+                    <button className="facets10-apply-btn" onClick={applyAllFilters}>Apply Filters</button>
+                )}
+                {hasAppliedFacets && (
+                    <button className="facets10-clear-btn" onClick={clearAllFilters}>Clear All</button>
+                )}
             </div>
 
             {Object.keys(facets).map(facetKey => {
                 const facetkey = facets[facetKey];
-                // console.log("facets[facetKey]", facetkey);
+                // //console.log("facets[facetKey]", facetkey);
                 const facetList = facets[facetKey]?.list || [];
 
-                console.log("facetList:", facetList);
+                //console.log("facetList:", facetList);
                 return facetList.map(facetItem => {
                     const facetName = facetItem.facetName || facetItem.filterField;
                     const facet = getFacetByName(facetName);
-                    console.log("facet:", facet);
+                    //console.log("facet:", facet);
 
                     if (!facet || !facet.values) {
                         return null;
@@ -115,7 +130,18 @@ const Facets14 = () => {
 
                     return (
                         <div key={facetName} className="facet-group">
-                            <h3>{facet.displayName}</h3>
+                            {/* <h3>{facet.displayName}</h3> */}
+                            <div
+                                className="UNX-dropdown-activator facets-header"
+                                onClick={() => toggleFacet(facetName)}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <div className="facets-displayName">{facet.displayName}</div>
+                                <div className='facets-icon'>⌄</div>
+                            </div>
+                            {openFacets[facetName] && (<>
+
+                            
                             {hasSelectedValues && (
                                 <div className="facet-selected-values">
                                     <span className="selected-label">Selected:</span>
@@ -234,6 +260,7 @@ const Facets14 = () => {
                                     </label>
                                 );
                             })}
+                            </>)}
                         </div>
                     );
                 });

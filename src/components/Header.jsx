@@ -29,6 +29,13 @@ function Header({ activeUsecases, setActiveUsecases }) {
                 { key: 'FixedPagination4', label: 'Dropdown', description: 'Page selector dropdown' },
                 { key: 'FixedPagination5', label: 'Compact', description: 'Minimal compact pagination' },
             ]
+        },
+          {
+            group: 'INFINITE SCROLL', 
+            items: [
+                { key: 'InfiniteScroll1', label: 'Basic Infinite Scroll', description: 'Basic infinite scroll behavior' },
+                
+            ]
         }
     ];
 
@@ -82,16 +89,16 @@ function Header({ activeUsecases, setActiveUsecases }) {
         {
             group: 'ACCORDION STYLE',
             items: [
-                { key: 'Facets6', label: 'Non-collapsible + Search', description: 'Search box, selected facets shown' },
+                { key: 'Facets6', label: 'Collapsible + Search', description: 'Search box, selected facets shown' },
                 { key: 'Facets10', label: 'Apply & Clear', description: 'Selected facets, apply/clear buttons' },
                 { key: 'Facets12', label: 'With Range Facet', description: 'Apply/clear buttons, range facet support' },
                 { key: 'Facets13', label: 'Range Slider Bar', description: 'Apply/clear, range facet with slider' },
                 { key: 'Facets14', label: 'Full Featured', description: 'Range, multilevel facet support' },
             ]
-        }
+        },
     ];
 
-    console.log("SearchBox:", SearchBox);
+    //console.log("SearchBox:", SearchBox);
     const autosuggestConfig = {
         enabled: true,
         delay: 0,

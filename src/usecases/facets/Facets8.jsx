@@ -5,8 +5,8 @@ const Facets8 = () => {
 
 
     const hasSelectedFacets = selectedFacets && Object.keys(selectedFacets).length > 0;
-    console.log("selectedFacets:", selectedFacets);
-    console.log("hasSelectedFacets:", Object.keys(selectedFacets));
+    //console.log("selectedFacets:", selectedFacets);
+    //console.log("hasSelectedFacets:", Object.keys(selectedFacets));
     if (!hasSelectedFacets) {
         return null;
     }
@@ -19,7 +19,7 @@ const Facets8 = () => {
                 {Object.entries(selectedFacets).map(([facetName, facetData]) => {
                 
                     const values = facetData.values || [];
-                    console.log("facetdata:", facetData);
+                    //console.log("facetdata:", facetData);
 
                     return values.map((value, index) => {
                         
