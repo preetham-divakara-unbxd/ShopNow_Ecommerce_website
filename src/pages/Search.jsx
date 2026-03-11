@@ -1,4 +1,5 @@
 import { SearchBox, Summary, Banner, Products, Image, Facets, RangeFacet, SelectedFacets, CheckboxFacet, MultilevelFacet, ProductViewRadioButtons, ProductViewButtons, PageSize, SortButtons, LoadMorePagination, FixedPagination, InfiniteScrollPagination, Breadcrumb } from "@unbxd-ui/react-search-components"
+import { Chat, InputBar, ConversationList } from "@unbxd-ui/react-shopping-assistant-components";
 // import { useProductView } from "@unbxd-ui/react-search-hooks";
 import { useOutletContext } from 'react-router';
 import SummaryComponent from '../components/SummaryComponent'
@@ -41,6 +42,8 @@ import PageSizeDropdown from "../usecases/pagesize/PageSizeDropdown";
 import RefreshButton from "../components/RefreshButton";
 import InfiniteScroll1 from "../usecases/loadmorepagination/InfiniteScroll1";
 import Counter from "../usecases/loadmorepagination/Counter";
+import ChatbotPanel from '../pages/ChatbotPanel';
+
 // import VisualSearchComponent from '../components/VisualSearchComponent';
 
 
@@ -60,7 +63,7 @@ import "@unbxd-ui/react-search-components/styles/breadcrumb.css";
 import "@unbxd-ui/react-search-components/styles/multilevelFacet.css";
 import "@unbxd-ui/react-search-components/styles/selectedFacets.css";
 import "@unbxd-ui/react-search-components/styles/infiniteScrollPagination.css";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 // require.resolve("@unbxd-ui/react-search-components/styles/loadMorePagination.css");
 
 const LoaderComponent = ({ className }) => {
@@ -99,7 +102,7 @@ const ProductHover = ({ product }) => {
                 <div className="product-price">${price}</div>
                 {variants && variants.length > 0 && (
                     <div className="variant-thumbnails">
-                       
+
                         {variants.map((variant, i) => (
                             <img
                                 key={i}
@@ -117,10 +120,11 @@ const ProductHover = ({ product }) => {
 
 function Search() {
     const { activeUsecases } = useOutletContext();
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
-useEffect(()=>{
- console.log("triggered");
-},[])
+    useEffect(() => {
+        console.log("triggered");
+    }, [])
 
     const renderPagination = () => {
         switch (activeUsecases.pagination) {
@@ -187,8 +191,9 @@ useEffect(()=>{
 
             {/* Search Content */}
             <div className="search-container">
-
+                
                 <div className="search-box-wrapper">
+
                     <Counter />
                     <RefreshButton />
                     <SearchBox
@@ -374,7 +379,7 @@ useEffect(()=>{
                              </InfiniteScrollPagination> */}
 
                             {/* <InfiniteScroll1> */}
-                                <Products ProductComponent={ProductHover} />
+                            <Products ProductComponent={ProductHover} />
                             {/* </InfiniteScroll1> */}
 
                         </div>
@@ -384,7 +389,7 @@ useEffect(()=>{
                         {/* <PaginationComponent /> */}
 
                         {/* <InfiniteScrollPagination LoaderComponent={LoaderComponent3} styles={{ wrapper: "infinite-scroll-pagination-wrapper", preLoader: "loader", postLoader: "loader" }}/> */}
-                 
+
 
                         {/* <LoadMorePagination LoaderComponent={LoaderComponent3} >
                             <Products ProductComponent={ProductHover} />
@@ -415,11 +420,23 @@ useEffect(()=>{
                         {/* <LoadMore1 /> */}
                         {/* <LoadMore2 /> */}
                         {/* <LoadMore3 /> */}
-                          {/* <InfiniteScroll1/> */}
+                        {/* <InfiniteScroll1/> */}
                         {renderPagination()}
                     </div>
                 </div>
             </div>
+           
+            <button
+                className="chatbot-fab"
+                onClick={() => setIsChatOpen(prev => !prev)}
+                title="Chat Assistant"
+            >
+                {isChatOpen ? '✕' : '💬'}
+            </button>
+  
+            {isChatOpen && (
+                <ChatbotPanel onClose={() => setIsChatOpen(false)} />
+            )}
         </div>
     )
 }
