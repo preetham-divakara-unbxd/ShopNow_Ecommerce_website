@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Home from './pages/Home'
 import Search from './pages/Search'
 import Header from './components/Header'
+import ProductPage from './pages/ProductPage';
 
 function Layout() {
 
@@ -32,17 +33,22 @@ function App() {
       siteKey={import.meta.env.VITE_UNBXD_SITE_KEY}
       apiKey={import.meta.env.VITE_UNBXD_API_KEY}
       convStorageType="LOCALSTORAGE"
+      convStorageName="home-srp"
       extraParams={{
         uid: "user123",
-        
+
       }}
       apiEndpoint="https://aus.assistant.unbxd.io"
-      requestBody={{
-        pagetype: "home"
+      requestBody={() => {
+        const pathname = window.location.pathname;
+        if (pathname.startsWith('/product/')) {
+          return { pagetype: "pdp" };
+        }
+        return { pagetype: "home" };
       }}
 
+
     >
-      
       <UnbxdSearchCSRWrapper
         siteKey={import.meta.env.VITE_UNBXD_SITE_KEY}
         apiKey={import.meta.env.VITE_UNBXD_API_KEY}
@@ -164,6 +170,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/product/:productId" element={<ProductPage />} />
           </Route>
         </Routes>
       </UnbxdSearchCSRWrapper >

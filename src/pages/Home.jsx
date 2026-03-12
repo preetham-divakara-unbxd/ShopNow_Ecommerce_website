@@ -1,7 +1,10 @@
 import { Link } from 'react-router'
 import shopnowLogo from '../assets/shopnow.png'
+import { useState } from 'react';
+import ChatbotPanel from './ChatbotPanel';
 
 function Home() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
   return (
     <div className="home-container">
       <div className="home-content">
@@ -49,7 +52,17 @@ function Home() {
           Search Products
         </Link>
       </div>
+       {isChatOpen && (
+            <ChatbotPanel onClose={() => setIsChatOpen(false)} />
+        )}
+        <button
+            className="chatbot-fab"
+            onClick={() => setIsChatOpen(prev => !prev)}
+        >
+            {isChatOpen ? '✕' : '🤖'}
+        </button>
     </div>
+    
   )
 }
 

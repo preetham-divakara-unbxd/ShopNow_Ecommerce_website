@@ -64,6 +64,7 @@ import "@unbxd-ui/react-search-components/styles/multilevelFacet.css";
 import "@unbxd-ui/react-search-components/styles/selectedFacets.css";
 import "@unbxd-ui/react-search-components/styles/infiniteScrollPagination.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router';
 // require.resolve("@unbxd-ui/react-search-components/styles/loadMorePagination.css");
 
 const LoaderComponent = ({ className }) => {
@@ -84,6 +85,7 @@ const LoaderComponent3 = ({ className }) => {
     </div>
 };
 const ProductHover = ({ product }) => {
+    const navigate = useNavigate();
     const { idx, uniqueId, title, price, imageUrl, variants } = product;
     const [activeImage, setActiveImage] = useState(imageUrl?.[0]);
 
@@ -92,7 +94,10 @@ const ProductHover = ({ product }) => {
             data-prank={idx}
             key={uniqueId}
             className="product-card"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/product/${uniqueId}`, { state: { product } });
+            }}
             style={{ cursor: "pointer" }}
         >
             <Image imageUrl={activeImage} hoverImageUrl={activeImage} />
@@ -191,10 +196,10 @@ function Search() {
 
             {/* Search Content */}
             <div className="search-container">
-                
+
                 <div className="search-box-wrapper">
 
-                    <Counter />
+
                     <RefreshButton />
                     <SearchBox
                         showSubmitButton={true}
@@ -425,17 +430,17 @@ function Search() {
                     </div>
                 </div>
             </div>
-           
+
             <button
                 className="chatbot-fab"
                 onClick={() => setIsChatOpen(prev => !prev)}
                 title="Chat Assistant"
             >
-                {isChatOpen ? '✕' : '💬'}
+                {isChatOpen ? '✕' : '🤖'}
             </button>
-  
+
             {isChatOpen && (
-                <ChatbotPanel onClose={() => setIsChatOpen(false)} />
+                <ChatbotPanel onClose={() => setIsChatOpen(false)}/>
             )}
         </div>
     )

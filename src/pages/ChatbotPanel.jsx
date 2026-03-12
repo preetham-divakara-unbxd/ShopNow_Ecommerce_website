@@ -1,42 +1,38 @@
 import { useShoppingAssistant } from "@unbxd-ui/react-shopping-assistant-hooks";
-import { useState, useRef, useEffect } from 'react';
-const ChatbotPanel = ({ onClose }) => {
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router";
+
+
+const ChatbotPanel = ({ onClose, fullWidth=false }) => {
     const {
         startNewConversation,
         askAgent,
-        fetchHistory,
-        getAllConversations,
-        updateConversationId,
         conversation,
-        conversationId,
-        conversationsList,
         loading,
-        initialLoading,
-        questions,
-        getInitialPrompts
     } = useShoppingAssistant();
-    
     const [inputText, setInputText] = useState('');
     const bottomRef = useRef(null);
-
+    const navigate=useNavigate();
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [conversation]);
+    
 
-    console.log("conversation", conversation);
-    console.log("startNewConversation", startNewConversation);
-    console.log("getInitialPrompts", getInitialPrompts);
-    console.log("questions", questions);
-    console.log("conversationId", conversationId);
-    console.log("conversationsList", conversationsList);
-    console.log("loading", loading);
-    console.log("initialLoading", initialLoading);
-    console.log("fetchHistory", fetchHistory);
-    console.log("getAllConversations", getAllConversations);
-    console.log("updateConversationId", updateConversationId);
+
+    // console.log("conversation", conversation);
+    // console.log("startNewConversation", startNewConversation);
+    // console.log("getInitialPrompts", getInitialPrompts);
+    // console.log("questions", questions);
+    // console.log("conversationId", conversationId);
+    // console.log("conversationsList", conversationsList);
+    // console.log("loading", loading);
+    // console.log("initialLoading", initialLoading);
+    // console.log("fetchHistory", fetchHistory);
+    // console.log("getAllConversations", getAllConversations);
+    // console.log("updateConversationId", updateConversationId);
 
     const handleSend = () => {
-        if (!inputText.trim()) return;
+        if (!inputText.trim() || loading) return;
         askAgent(inputText);
         setInputText('');
     };
@@ -45,7 +41,7 @@ const ChatbotPanel = ({ onClose }) => {
     };
 
     return (
-        <div className="chatbot-panel">
+        <div className={`chatbot-panel ${fullWidth ? 'chatbot-panel-fullwidth' : ''}`}>
             <div className="chatbot-header">
                 <div className="chatbot-header-left">
                     <div className="chatbot-agent-icon">🤖</div>
@@ -56,7 +52,7 @@ const ChatbotPanel = ({ onClose }) => {
                 </div>
                 <div className="chatbot-header-right">
                     <button className="chatbot-new-chat" onClick={startNewConversation}>+ New Chat</button>
-                    <button className="chatbot-close" onClick={onClose}>✕</button>
+                    {!fullWidth && (<button className="chatbot-close" onClick={onClose}>✕</button>)}
                 </div>
             </div>
             <div className="chatbot-body">
@@ -70,8 +66,10 @@ const ChatbotPanel = ({ onClose }) => {
                         Ask me anything, or try one of these to get started:
                     </div>
                 )}
-
-                {conversation.map((msg, i) => (
+               
+                {conversation.map((msg, i) => { 
+                    // console.log(msg.content?.products);
+                    return (
 
                     <div key={i} className={`chat-message-wrapper ${msg.role}`}>
 
@@ -110,13 +108,20 @@ const ChatbotPanel = ({ onClose }) => {
                                             )}
                                         </div>
                                     )}
-
+                                    
                                     {msg.content?.products?.length > 0 && (
                                         <div className="chat-products-section">
                                             <div className="chat-products-heading">Recommended Products:</div>
                                             <div className="chat-products-scroll">
                                                 {msg.content.products.map((product) => (
-                                                    <div key={product.uniqueId} className="chat-product-card">
+                                                    <div key={product.uniqueId} 
+                                                    className="chat-product-card"
+                                                    onClick={(e)=>{
+                                                         e.preventDefault();
+                                                         navigate(`/product/${product.uniqueId}`, { state: { product } });
+                                                    }}
+                                                    style={{ cursor: "pointer" }}
+                                                    >
                                                         <img src={product.imageUrl?.[0]} alt={product.title} />
                                                         <div className="chat-product-title">{product.title}</div>
                                                     </div>
@@ -128,16 +133,18 @@ const ChatbotPanel = ({ onClose }) => {
                             </div>
                         )}
                     </div>
-                ))}
+                )})}
+
                 {loading && (
                     <div className="chat-message-wrapper assistant">
                         <img src="/icons/robot.png" alt="robot" className="icon-image" />
                         <div className="chat-assistant-bubble">
-                            Analysing your request...
+                            <span>Analysing your request..</span>
                         </div>
                     </div>
                 )}
-                <div ref={bottomRef} /> 
+                <div ref={bottomRef} />
+
 
             </div>
             <div className="chatbot-input-bar">
