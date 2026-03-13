@@ -93,7 +93,7 @@ function App() {
             }
           },
           pageSize: { addToUrl: true, key: "rows" },
-          pagination: { addToUrl: true, key: "start", usePageNo: false },
+          pagination: { addToUrl: true, key: "start", usePageNo: true },
           facets: {
             addToUrl: true,
             valuesSeparator: "|",

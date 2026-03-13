@@ -383,9 +383,9 @@ function Search() {
                             <Products ProductComponent={ProductHover} />
                              </InfiniteScrollPagination> */}
 
-                            {/* <InfiniteScroll1> */}
+                          {/* <InfiniteScroll1> */}
                             <Products ProductComponent={ProductHover} />
-                            {/* </InfiniteScroll1> */}
+                            {/* </InfiniteScroll1>  */}
 
                         </div>
                     </div>
@@ -425,8 +425,8 @@ function Search() {
                         {/* <LoadMore1 /> */}
                         {/* <LoadMore2 /> */}
                         {/* <LoadMore3 /> */}
-                        {/* <InfiniteScroll1/> */}
-                        {renderPagination()}
+                        <InfiniteScroll1/>
+                        {/* {renderPagination()} */}
                     </div>
                 </div>
             </div>

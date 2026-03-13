@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@unbxd-ui/react-recs-components": "^1.1.0",
+    "@unbxd-ui/react-recs-hooks": "^1.1.0",
     "@unbxd-ui/react-search-components": "^0.1.54",
     "@unbxd-ui/react-search-hooks": "^0.1.55",
     "@unbxd-ui/react-shopping-assistant-components": "^1.2.3-beta.2",

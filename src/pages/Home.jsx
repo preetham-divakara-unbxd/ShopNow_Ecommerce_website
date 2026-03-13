@@ -2,67 +2,88 @@ import { Link } from 'react-router'
 import shopnowLogo from '../assets/shopnow.png'
 import { useState } from 'react';
 import ChatbotPanel from './ChatbotPanel';
+import { UnbxdRecsCSRWrapper } from "@unbxd-ui/react-recs-hooks";
+import { Widget } from "@unbxd-ui/react-recs-components";
+import RecommendationsDisplay from './RecommendationsDisplay';
+
+// Import styles (optional)
+import "@unbxd-ui/react-recs-components/styles/widget.css";
 
 function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   return (
-    <div className="home-container">
-      <div className="home-content">
-        {/* Logo Section */}
-        <div className="logo-section">
-          {/* ShopNow Logo */}
-          <img 
-            src={shopnowLogo} 
-            alt="ShopNow Logo" 
-            className="logo-image-large"
-          />
-        </div>
-        
-        {/* Welcome Text */}
-        <div className="welcome-section">
-          <h1 className="welcome-title">Welcome to ShopNow</h1>
-          <p className="welcome-description">
-            Discover amazing products from thousands of brands. Shop with confidence and enjoy fast, 
-            reliable delivery to your doorstep. Your one-stop destination for all your shopping needs.
-          </p>
-        </div>
-        
-        {/* Features */}
-        <div className="features-section">
-          <div className="feature-item">
-            <div className="feature-icon">🚚</div>
-            <p className="feature-text">Fast Delivery</p>
+    <UnbxdRecsCSRWrapper
+      sitekey={import.meta.env.VITE_UNBXD_SITE_KEY}
+      apikey={import.meta.env.VITE_UNBXD_API_KEY}
+
+      extraParams={{
+        pageType: "HOME",
+        uid: "user123",
+      }}
+      // allowCookies={true}
+
+    >
+      <div className="home-container">
+        <div className="home-content">
+
+          <div className="logo-section">
+
+            <img
+              src={shopnowLogo}
+              alt="ShopNow Logo"
+              className="logo-image-large"
+            />
           </div>
-          <div className="feature-item">
-            <div className="feature-icon">🔒</div>
-            <p className="feature-text">Secure Payment</p>
+
+
+          <div className="welcome-section">
+            <h1 className="welcome-title">Welcome to ShopNow</h1>
+            <p className="welcome-description">
+              Discover amazing products from thousands of brands. Shop with confidence and enjoy fast,
+              reliable delivery to your doorstep. Your one-stop destination for all your shopping needs.
+            </p>
           </div>
-          <div className="feature-item">
-            <div className="feature-icon">⭐</div>
-            <p className="feature-text">Quality Products</p>
+
+
+          <div className="features-section">
+            <div className="feature-item">
+              <div className="feature-icon">🚚</div>
+              <p className="feature-text">Fast Delivery</p>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">🔒</div>
+              <p className="feature-text">Secure Payment</p>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">⭐</div>
+              <p className="feature-text">Quality Products</p>
+            </div>
           </div>
+
+          <Link to="/search" className="search-button">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M14 14L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            Search Products
+          </Link>
+           <div className="recommendations-container">
+          {/* <Widget widgetId="widget1" /> */}
+          <RecommendationsDisplay />
         </div>
-        
-        {/* Search Button with Black Background */}
-        <Link to="/search" className="search-button">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.5"/>
-            <path d="M14 14L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
-          Search Products
-        </Link>
-      </div>
-       {isChatOpen && (
-            <ChatbotPanel onClose={() => setIsChatOpen(false)} />
+        </div>
+       
+        {isChatOpen && (
+          <ChatbotPanel onClose={() => setIsChatOpen(false)} />
         )}
         <button
-            className="chatbot-fab"
-            onClick={() => setIsChatOpen(prev => !prev)}
+          className="chatbot-fab"
+          onClick={() => setIsChatOpen(prev => !prev)}
         >
-            {isChatOpen ? '✕' : '🤖'}
+          {isChatOpen ? '✕' : '🤖'}
         </button>
-    </div>
-    
+      </div>
+    </UnbxdRecsCSRWrapper>
   )
 }
 

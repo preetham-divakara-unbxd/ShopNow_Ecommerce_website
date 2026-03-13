@@ -1,7 +1,7 @@
 import { usePagination ,useProducts} from '@unbxd-ui/react-search-hooks';
 import { useEffect} from 'react';
 
-const InfiniteScroll1 = ({ children }) => {
+const InfiniteScroll1 = () => {
     const { loadNextPage, isLastPage } = usePagination();
     const { loading } = useProducts();
     
@@ -12,14 +12,14 @@ const InfiniteScroll1 = ({ children }) => {
                 loadNextPage();
             }
         };
-        console.log("triggerd");
+        // console.log("triggerd");
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     return (
         <>
-            {children}   
+            
             {loading && (
                 <div className="load-more-loader">
                     <img src="/blueLoader.svg" alt="Loading..." />
