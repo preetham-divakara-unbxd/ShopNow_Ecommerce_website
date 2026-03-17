@@ -1,31 +1,35 @@
-import { useLocation } from 'react-router';
+import { useLocation, useOutletContext, useNavigate } from 'react-router';
 import { UnbxdShoppingAssistantWrapper } from "@unbxd-ui/react-shopping-assistant-hooks";
 import ChatbotPanel from './ChatbotPanel';
 import { UnbxdRecsCSRWrapper } from "@unbxd-ui/react-recs-hooks";
 import { Widget } from "@unbxd-ui/react-recs-components";
 import RecommendationsDisplay from './RecommendationsDisplay';
+import { useEffect } from 'react';
 // Import styles (optional)
 import "@unbxd-ui/react-recs-components/styles/widget.css";
 const ProductPage = () => {
     const { state } = useLocation();
+    const navigate = useNavigate();
+
     const product = state?.product;
     console.log("product", product);
-
+    
     const productId = product?.uniqueId;
-
+    const { cartItems, addToCart } = useOutletContext();
+    const isInCart = cartItems.some(item => item.uniqueId === product.uniqueId);
     if (!product) return <div className="product-not-found">Product not found</div>;
 
     return (
         <UnbxdRecsCSRWrapper
             sitekey={import.meta.env.VITE_UNBXD_SITE_KEY}
             apikey={import.meta.env.VITE_UNBXD_API_KEY}
-          
+
             extraParams={{
                 pageType: "PRODUCT",
                 id: productId,
                 uid: "user123",
             }}
-            // allowCookies={true}
+        // allowCookies={true}
 
         >
             <UnbxdShoppingAssistantWrapper
@@ -59,7 +63,15 @@ const ProductPage = () => {
                             <div className="product-page-price">${product.price}</div>
                             <div className='product-page-description-title'>Description:</div>
                             <p className="product-page-description">{product.description}</p>
-                            <button className="product-page-add-to-cart">Add to Cart</button>
+                            {isInCart ? (
+                                <button className="product-page-add-to-cart go-to-cart" onClick={() => navigate('/cart')}>
+                                    Go to Cart
+                                </button>
+                            ) : (
+                                <button className="product-page-add-to-cart" onClick={() => addToCart(product)}>
+                                    Add to Cart
+                                </button>
+                            )}
                         </div>
 
                     </div>

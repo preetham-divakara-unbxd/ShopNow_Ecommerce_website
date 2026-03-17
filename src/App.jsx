@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Search from './pages/Search'
 import Header from './components/Header'
 import ProductPage from './pages/ProductPage';
+import CartPage from './pages/CartPage';
 
 function Layout() {
 
@@ -16,12 +17,49 @@ function Layout() {
     pageSize: 'PageSizeDropdown',
     productView: 'ProductViewSMLComponent'
   });
+  const [cartItems, setCartItems] = useState(() => {
+    const saved = localStorage.getItem('cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const addToCart = (product) => {
+    setCartItems(prev => {
+      const exists = prev.find(item => item.uniqueId === product.uniqueId);
+      let updated;
+      if (exists) {
+        updated = prev.map(item =>
+          item.uniqueId === product.uniqueId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        updated = [...prev, { ...product, quantity: 1 }];
+      }
+      localStorage.setItem('cart', JSON.stringify(updated));
+      return updated;
+    });
+  };
+  const removeFromCart = (uniqueId) => {
+    setCartItems(prev => {
+      const updated = prev.filter(item => item.uniqueId !== uniqueId);
+      localStorage.setItem('cart', JSON.stringify(updated));
+      return updated;
+    });
+  };
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cart');
+  };
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   return (
     <>
-      <Header activeUsecases={activeUsecases} setActiveUsecases={setActiveUsecases} />
-      <Outlet context={{ activeUsecases }} />
+      <Header
+        activeUsecases={activeUsecases}
+        setActiveUsecases={setActiveUsecases}
+        cartCount={cartCount}
+      />
+      <Outlet context={{ activeUsecases, cartItems, addToCart, removeFromCart, clearCart, cartCount }} />
     </>
-  )
+  );
 }
 
 function App() {
@@ -171,6 +209,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/product/:productId" element={<ProductPage />} />
+            <Route path="/cart" element={<CartPage />} />
           </Route>
         </Routes>
       </UnbxdSearchCSRWrapper >

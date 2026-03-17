@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router";
 
 
-const ChatbotPanel = ({ onClose, fullWidth=false }) => {
+const ChatbotPanel = ({ onClose, fullWidth = false }) => {
     const {
         startNewConversation,
         askAgent,
@@ -11,12 +11,24 @@ const ChatbotPanel = ({ onClose, fullWidth=false }) => {
         loading,
     } = useShoppingAssistant();
     const [inputText, setInputText] = useState('');
-    const bottomRef = useRef(null);
-    const navigate=useNavigate();
+
+    const navigate = useNavigate();
+    // const bottomRef = useRef(null);
+    // useEffect(() => {
+    //     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // }, [conversation]);
+
+    const chatBodyRef = useRef(null);
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (chatBodyRef.current) {
+            // chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+            chatBodyRef.current.scrollTo({
+                top: chatBodyRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+
+        }
     }, [conversation]);
-    
 
 
     // console.log("conversation", conversation);
@@ -55,7 +67,7 @@ const ChatbotPanel = ({ onClose, fullWidth=false }) => {
                     {!fullWidth && (<button className="chatbot-close" onClick={onClose}>✕</button>)}
                 </div>
             </div>
-            <div className="chatbot-body">
+            <div className="chatbot-body" ref={chatBodyRef}>
                 <div className="initial-message-component">
                     👋 Hi there! I'm your Furniture Shopping Assistant, ready to help you find exactly what you're looking for. ✨ — What would you like to shop for today?
                     <br />
@@ -66,74 +78,75 @@ const ChatbotPanel = ({ onClose, fullWidth=false }) => {
                         Ask me anything, or try one of these to get started:
                     </div>
                 )}
-               
-                {conversation.map((msg, i) => { 
+
+                {conversation.map((msg, i) => {
                     // console.log(msg.content?.products);
                     return (
 
-                    <div key={i} className={`chat-message-wrapper ${msg.role}`}>
+                        <div key={i} className={`chat-message-wrapper ${msg.role}`}>
 
-                        {msg.role === 'user' && (
-                            <>
-                                <img src="/icons/user.png" alt="user" className="icon-image" />
-                                <div className="chat-user-message">
-                                    {msg.message}
-                                </div>
-                            </>
-
-                        )}
-
-
-                        {msg.role === 'assistant' && (
-                            <div className="chat-assistant-wrapper">
-                                <img src="/icons/robot.png" alt="robot" className="icon-image" />
-                                <div className="chat-assistant-content">
-
-                                    <div className="chat-assistant-bubble">
+                            {msg.role === 'user' && (
+                                <>
+                                    <img src="/icons/user.png" alt="user" className="icon-image" />
+                                    <div className="chat-user-message">
                                         {msg.message}
                                     </div>
+                                </>
 
-                                    {msg.content?.filters?.length > 0 && (
-                                        <div className="chat-filter-pills">
-                                            {msg.content.filters.map((filter, fi) =>
-                                                filter.options?.map((option, oi) => (
-                                                    <button
-                                                        key={`${fi}-${oi}`}
-                                                        className="chat-filter-pill"
-                                                        onClick={() => askAgent(option, { field: filter.field, options: [option] })}
-                                                    >
-                                                        {option}
-                                                    </button>
-                                                ))
-                                            )}
+                            )}
+
+
+                            {msg.role === 'assistant' && (
+                                <div className="chat-assistant-wrapper">
+                                    <img src="/icons/robot.png" alt="robot" className="icon-image" />
+                                    <div className="chat-assistant-content">
+
+                                        <div className="chat-assistant-bubble">
+                                            {msg.message}
                                         </div>
-                                    )}
-                                    
-                                    {msg.content?.products?.length > 0 && (
-                                        <div className="chat-products-section">
-                                            <div className="chat-products-heading">Recommended Products:</div>
-                                            <div className="chat-products-scroll">
-                                                {msg.content.products.map((product) => (
-                                                    <div key={product.uniqueId} 
-                                                    className="chat-product-card"
-                                                    onClick={(e)=>{
-                                                         e.preventDefault();
-                                                         navigate(`/product/${product.uniqueId}`, { state: { product } });
-                                                    }}
-                                                    style={{ cursor: "pointer" }}
-                                                    >
-                                                        <img src={product.imageUrl?.[0]} alt={product.title} />
-                                                        <div className="chat-product-title">{product.title}</div>
-                                                    </div>
-                                                ))}
+
+                                        {msg.content?.filters?.length > 0 && (
+                                            <div className="chat-filter-pills">
+                                                {msg.content.filters.map((filter, fi) =>
+                                                    filter.options?.map((option, oi) => (
+                                                        <button
+                                                            key={`${fi}-${oi}`}
+                                                            className="chat-filter-pill"
+                                                            onClick={() => askAgent(option, { field: filter.field, options: [option] })}
+                                                        >
+                                                            {option}
+                                                        </button>
+                                                    ))
+                                                )}
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
+
+                                        {msg.content?.products?.length > 0 && (
+                                            <div className="chat-products-section">
+                                                <div className="chat-products-heading">Recommended Products:</div>
+                                                <div className="chat-products-scroll">
+                                                    {msg.content.products.map((product) => (
+                                                        <div key={product.uniqueId}
+                                                            className="chat-product-card"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                navigate(`/product/${product.uniqueId}`, { state: { product } });
+                                                            }}
+                                                            style={{ cursor: "pointer" }}
+                                                        >
+                                                            <img src={product.imageUrl?.[0]} alt={product.title} />
+                                                            <div className="chat-product-title">{product.title}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                )})}
+                            )}
+                        </div>
+                    )
+                })}
 
                 {loading && (
                     <div className="chat-message-wrapper assistant">
@@ -143,7 +156,7 @@ const ChatbotPanel = ({ onClose, fullWidth=false }) => {
                         </div>
                     </div>
                 )}
-                <div ref={bottomRef} />
+                {/* <div ref={bottomRef} /> */}
 
 
             </div>

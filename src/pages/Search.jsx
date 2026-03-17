@@ -88,6 +88,7 @@ const ProductHover = ({ product }) => {
     const navigate = useNavigate();
     const { idx, uniqueId, title, price, imageUrl, variants } = product;
     const [activeImage, setActiveImage] = useState(imageUrl?.[0]);
+    const { addToCart } = useOutletContext();
 
     return (
         <div
@@ -118,6 +119,13 @@ const ProductHover = ({ product }) => {
                         ))}
                     </div>
                 )}
+                <button className="search-page-add-to-cart"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                    }}>
+                    Add to Cart
+                </button>
             </div>
         </div>
     );
@@ -383,9 +391,15 @@ function Search() {
                             <Products ProductComponent={ProductHover} />
                              </InfiniteScrollPagination> */}
 
-                          {/* <InfiniteScroll1> */}
-                            <Products ProductComponent={ProductHover} />
+                            {/* <InfiniteScroll1> */}
+                            {/* <Products ProductComponent={ProductHover} /> */}
                             {/* </InfiniteScroll1>  */}
+                            {/* <LoadMore1>
+                                 <Products ProductComponent={ProductHover} />
+                            </LoadMore1> */}
+                            <LoadMorePagination LoaderComponent={LoaderComponent3} >
+                                <Products ProductComponent={ProductHover} />
+                            </LoadMorePagination>
 
                         </div>
                     </div>
@@ -422,10 +436,11 @@ function Search() {
                         {/* for fixed pagination 6 is included inside  <FixedPagination1 /> */}
                         {/* for fixed pagination 7 uncomment <FixedPagination1 /> in product view */}
 
-                        {/* <LoadMore1 /> */}
+                        {/*<LoadMore1/>*/}
+
                         {/* <LoadMore2 /> */}
                         {/* <LoadMore3 /> */}
-                        <InfiniteScroll1/>
+                        {/* <InfiniteScroll1/> */}
                         {/* {renderPagination()} */}
                     </div>
                 </div>
@@ -440,7 +455,7 @@ function Search() {
             </button>
 
             {isChatOpen && (
-                <ChatbotPanel onClose={() => setIsChatOpen(false)}/>
+                <ChatbotPanel onClose={() => setIsChatOpen(false)} />
             )}
         </div>
     )

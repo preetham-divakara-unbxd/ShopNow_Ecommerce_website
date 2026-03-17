@@ -7,6 +7,14 @@ const InfiniteScroll1 = () => {
     
     useEffect(() => {
         const handleScroll = () => {
+            console.log(
+                "scroll check:",
+                window.innerHeight + window.scrollY,
+                ">=",
+                document.body.offsetHeight - 200,
+                "isLast:", isLastPage(),
+                "loading:", loading
+            );
             if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200 
                 && !isLastPage() ){ 
                 loadNextPage();

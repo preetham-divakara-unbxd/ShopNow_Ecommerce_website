@@ -7,7 +7,7 @@ import SearchComponent from './SearchComponent'
 import AutosuggestComponent from './AutosuggestComponent'
 import { useState } from 'react'
 
-function Header({ activeUsecases, setActiveUsecases }) {
+function Header({ activeUsecases, setActiveUsecases, cartCount }) {
 
     const [hoveredPill, setHoveredPill] = useState(null);
 
@@ -30,11 +30,11 @@ function Header({ activeUsecases, setActiveUsecases }) {
                 { key: 'FixedPagination5', label: 'Compact', description: 'Minimal compact pagination' },
             ]
         },
-          {
-            group: 'INFINITE SCROLL', 
+        {
+            group: 'INFINITE SCROLL',
             items: [
                 { key: 'InfiniteScroll1', label: 'Basic Infinite Scroll', description: 'Basic infinite scroll behavior' },
-                
+
             ]
         }
     ];
@@ -291,7 +291,12 @@ function Header({ activeUsecases, setActiveUsecases }) {
                             </div>
                         )}
                     </div>
+                    <Link to="/cart" className="header-cart-btn">
+                        🛒
+                        {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                    </Link>
                 </div>
+
             </div>
         </header>
     )
