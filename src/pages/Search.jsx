@@ -1,6 +1,7 @@
 import { SearchBox, Summary, Banner, Products, Image, Facets, RangeFacet, SelectedFacets, CheckboxFacet, MultilevelFacet, ProductViewRadioButtons, ProductViewButtons, PageSize, SortButtons, LoadMorePagination, FixedPagination, InfiniteScrollPagination, Breadcrumb } from "@unbxd-ui/react-search-components"
 import { Chat, InputBar, ConversationList } from "@unbxd-ui/react-shopping-assistant-components";
 // import { useProductView } from "@unbxd-ui/react-search-hooks";
+
 import { useOutletContext } from 'react-router';
 import SummaryComponent from '../components/SummaryComponent'
 import PaginationComponent from "../components/PaginationComponent";
@@ -93,6 +94,8 @@ const ProductHover = ({ product }) => {
     return (
         <div
             data-prank={idx}
+            data-unxItem="product"
+            data-unxId={uniqueId}
             key={uniqueId}
             className="product-card"
             onClick={(e) => {
@@ -135,9 +138,7 @@ function Search() {
     const { activeUsecases } = useOutletContext();
     const [isChatOpen, setIsChatOpen] = useState(false);
 
-    useEffect(() => {
-        console.log("triggered");
-    }, [])
+
 
     const renderPagination = () => {
         switch (activeUsecases.pagination) {

@@ -1,12 +1,19 @@
 import { Routes, Route, Outlet, useNavigate } from 'react-router'
 import { UnbxdSearchCSRWrapper } from "@unbxd-ui/react-search-hooks"
 import { UnbxdShoppingAssistantWrapper } from "@unbxd-ui/react-shopping-assistant-hooks";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Home from './pages/Home'
 import Search from './pages/Search'
 import Header from './components/Header'
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
+import analyticsConfig from './analytics/metadata.json';
+import siteConfig from './analytics/config';
+import OrdersPage from './pages/OrdersPage';
+
+
+
+
 
 function Layout() {
 
@@ -21,6 +28,23 @@ function Layout() {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
   });
+  const [orders, setOrders] = useState(() => {
+    const saved = localStorage.getItem('orders');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const placeOrder = () => {
+    if (cartItems.length === 0) return;
+    const newOrder = {
+      id: Date.now(),
+      items: [...cartItems],
+      total: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+      date: new Date().toLocaleDateString(),
+    };
+    const updatedOrders = [newOrder, ...orders];
+    setOrders(updatedOrders);
+    localStorage.setItem('orders', JSON.stringify(updatedOrders));
+    clearCart();
+  };
   const addToCart = (product) => {
     setCartItems(prev => {
       const exists = prev.find(item => item.uniqueId === product.uniqueId);
@@ -34,6 +58,19 @@ function Layout() {
       } else {
         updated = [...prev, { ...product, quantity: 1 }];
       }
+      localStorage.setItem('cart', JSON.stringify(updated));
+      return updated;
+    });
+  };
+  const updateQuantity = (uniqueId, delta) => {
+    setCartItems(prev => {
+      const updated = prev.map(item => {
+        if (item.uniqueId === uniqueId) {
+          const newQty = item.quantity + delta;
+          return newQty > 0 ? { ...item, quantity: newQty } : item;
+        }
+        return item;
+      });
       localStorage.setItem('cart', JSON.stringify(updated));
       return updated;
     });
@@ -56,8 +93,11 @@ function Layout() {
         activeUsecases={activeUsecases}
         setActiveUsecases={setActiveUsecases}
         cartCount={cartCount}
+        cartItems={cartItems}
+        updateQuantity={updateQuantity}
+        removeFromCart={removeFromCart}
       />
-      <Outlet context={{ activeUsecases, cartItems, addToCart, removeFromCart, clearCart, cartCount }} />
+      <Outlet context={{ activeUsecases, cartItems, addToCart, removeFromCart, clearCart, cartCount, updateQuantity, orders, placeOrder }} />
     </>
   );
 }
@@ -65,7 +105,21 @@ function Layout() {
 function App() {
 
   const navigate = useNavigate();
+  // useEffect(()=>{
+  //   window.UnbxdSiteName= analyticsConfig.siteName;
+  //   window.UnxAnalyticsConfig = { ...siteConfig, metaData: analyticsConfig };
+
+  // })
+  useEffect(() => {
+    window.UnbxdSiteName = analyticsConfig.siteName;
+    window.UnxAnalyticsConfig = { ...siteConfig, metaData: analyticsConfig };
+
+    const script = document.createElement('script');
+    script.src = 'https://libraries.unbxdapi.com/ua/v6.3.2/uaLibrary.js';
+    document.head.appendChild(script);
+  });
   // //console.log("Site Key:", import.meta.env.VITE_UNBXD_SITE_KEY);
+
   return (
     <UnbxdShoppingAssistantWrapper
       siteKey={import.meta.env.VITE_UNBXD_SITE_KEY}
@@ -104,7 +158,7 @@ function App() {
           orderOfParams: ["sort", "view", "query", "color_uFilter"],
           query: {
             addToUrl: true,
-            key: "query"
+            key: "q"
           },
           imageQuery: {
             addToUrl: true,
@@ -162,7 +216,7 @@ function App() {
             // console.log(window.location.origin);
 
 
-            if (search.includes('query=') || pathname === '/search') {
+            if (search.includes('q=') || pathname === '/search') {
               const targetUrl = `/search${search}`;
 
               if (replace) {
@@ -210,6 +264,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/product/:productId" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
           </Route>
         </Routes>
       </UnbxdSearchCSRWrapper >

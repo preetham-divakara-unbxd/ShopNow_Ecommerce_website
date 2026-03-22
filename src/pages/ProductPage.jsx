@@ -4,7 +4,7 @@ import ChatbotPanel from './ChatbotPanel';
 import { UnbxdRecsCSRWrapper } from "@unbxd-ui/react-recs-hooks";
 import { Widget } from "@unbxd-ui/react-recs-components";
 import RecommendationsDisplay from './RecommendationsDisplay';
-import { useEffect } from 'react';
+
 // Import styles (optional)
 import "@unbxd-ui/react-recs-components/styles/widget.css";
 const ProductPage = () => {

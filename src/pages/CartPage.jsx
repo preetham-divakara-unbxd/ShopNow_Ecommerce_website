@@ -1,10 +1,33 @@
 import { useOutletContext, useNavigate } from 'react-router';
 import { UnbxdRecsCSRWrapper } from "@unbxd-ui/react-recs-hooks";
 import RecommendationsDisplay from './RecommendationsDisplay';
+import { useState } from 'react';
+
 const CartPage = () => {
-    const { cartItems, removeFromCart, clearCart, cartCount } = useOutletContext();
+    const { cartItems, removeFromCart, clearCart, cartCount, updateQuantity, placeOrder } = useOutletContext();
+    const [showOrderSuccess, setShowOrderSuccess] = useState(false);
+
+    const handlePlaceOrder = () => {
+        placeOrder();
+        setShowOrderSuccess(true);
+    };
     const navigate = useNavigate();
 
+    if (showOrderSuccess) {
+        return (
+            <div className="order-success-overlay">
+                <div className="order-success-modal">
+                    <div className="order-success-icon">🎉</div>
+                    <h2>Congratulations!</h2>
+                    <p>Your order has been placed successfully.</p>
+                    <div className="order-success-btns">
+                        <button onClick={() => navigate('/orders')}>View Orders</button>
+                        <button onClick={() => navigate('/search')}>Continue Shopping</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     if (cartItems.length === 0) {
         return (
             <div className="cart-empty">
@@ -37,18 +60,29 @@ const CartPage = () => {
                             <div className="cart-item-details">
                                 <div className="cart-item-title">{item.title}</div>
                                 <div className="cart-item-price">${item.price}</div>
-                                <div className="cart-item-qty">Qty: {item.quantity}</div>
+
                             </div>
-                            <button className="cart-item-remove" onClick={() => removeFromCart(item.uniqueId)}>Remove</button>
+                            <div className="cart-item-actions">
+                                <div className="cart-qty-controls">
+                                    <button className="cart-qty-btn" onClick={() => updateQuantity(item.uniqueId, -1)} disabled={item.quantity <= 1}>−</button>
+                                    <span className="cart-qty-value">{item.quantity}</span>
+                                    <button className="cart-qty-btn" onClick={() => updateQuantity(item.uniqueId, 1)}>+</button>
+                                </div>
+                                <button className="cart-item-remove" onClick={() => removeFromCart(item.uniqueId)}>Remove</button>
+                            </div>
                         </div>
                     ))}
                 </div>
                 <div className="cart-footer">
                     <div className="cart-total">Total: ${total.toFixed(2)}</div>
-                    <button className="cart-clear-btn" onClick={clearCart}>Clear Cart</button>
+                    <div className="cart-footer-btns">
+                        <button className="cart-clear-btn" onClick={clearCart}>Clear Cart</button>
+                        <button className="cart-place-order-btn" onClick={handlePlaceOrder}>Place Order</button>
+                    </div>
                 </div>
+               
                 <div className="recommendations-container">
-                   
+
                     <RecommendationsDisplay />
                 </div>
             </div>
