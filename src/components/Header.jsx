@@ -331,13 +331,13 @@ function Header({ activeUsecases, setActiveUsecases, cartCount, cartItems, updat
                                         {cartItems.length > 2 && (
                                             <div className="cart-popup-more">+{cartItems.length - 2} more items</div>
                                         )}
-                                        <Link to="/cart" className="cart-popup-view-all">View Cart ({cartCount})</Link>
+                                        <Link to="/cart" className="cart-popup-view-all">View Cart ({cartItems.length})</Link>
                                     </>
                                 )}
                             </div>
                         )}
                     </div>
-                    <Link to="/orders" className="header-orders-btn"> 📦</Link>
+                    {/* <Link to="/orders" className="header-orders-btn"> 📦</Link> */}
                 </div>
 
             </div>

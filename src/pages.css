@@ -2604,76 +2604,63 @@
 
 /* Order Success Modal */
 .order-success-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
 }
+
 .order-success-modal {
-  background: #fff;
-  padding: 40px;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+
 .order-success-icon {
-  font-size: 3rem;
-  margin-bottom: 12px;
+    font-size: 3rem;
+    margin-bottom: 12px;
 }
+
 .order-success-modal h2 {
-  font-size: 1.5rem;
-  color: #1a1a2e;
-  margin-bottom: 8px;
+    font-size: 1.5rem;
+    color: #1a1a2e;
+    margin-bottom: 8px;
 }
+
 .order-success-modal p {
-  color: #666;
-  margin-bottom: 24px;
+    color: #666;
+    margin-bottom: 24px;
 }
+
 .order-success-btns {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
 }
 
 .order-success-btns button {
-  padding: 12px 28px;
-  border: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  min-width: 160px;
+    padding: 12px 28px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    min-width: 160px;
+    background: #3366ff;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(51, 102, 255, 0.3);
 }
 
-.order-success-btns button:first-child {
-  background: #3366ff;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(51, 102, 255, 0.3);
+.order-success-btns button:hover {
+    background: #254edb;
+    box-shadow: 0 4px 12px rgba(51, 102, 255, 0.4);
+    transform: translateY(-1px);
 }
-
-.order-success-btns button:first-child:hover {
-  background: #254edb;
-  box-shadow: 0 4px 12px rgba(51, 102, 255, 0.4);
-  transform: translateY(-1px);
-}
-
-.order-success-btns button:last-child {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #e5e7eb;
-}
-
-.order-success-btns button:last-child:hover {
-  background: #e5e7eb;
-  transform: translateY(-1px);
-}
-
 /* Orders Page */
 .orders-page {
   max-width: 900px;

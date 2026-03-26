@@ -19,7 +19,8 @@ const FacetPill = ({ item, isSelected, onToggle }) => {
             className={`facet-pill ${isSelected ? 'selected' : ''}`}
             onClick={onToggle}
         >
-            {item.value} ({item.count})
+            {/* {item.value} ({item.count}) */}
+            <span className="facet-value-text">{item.value}</span> ({item.count})
         </button>
     );
 };
@@ -165,7 +166,7 @@ const Facets3 = () => {
                                                     }
                                                 }}
                                             />
-                                            {option.value} ({option.count})
+                                           <span className="facet-value-text">{option.value}</span> ({option.count})
                                         </div>
                                     ))
                                 )}

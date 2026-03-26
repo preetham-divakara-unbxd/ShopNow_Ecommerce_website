@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { 
-    PopularProducts, 
-    KeywordSuggestions, 
-    TrendingQueries, 
-    TopQueries, 
-    PromotedSuggestions 
+import {
+    PopularProducts,
+    KeywordSuggestions,
+    TrendingQueries,
+    TopQueries,
+    PromotedSuggestions
 } from "@unbxd-ui/react-search-components";
 
 const AutosuggestNoResult = ({ autosuggestQuery }) => {
@@ -19,43 +19,43 @@ const DefaultHeader = ({ headerText }) => {
 const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery }) => {
     const {
         LoaderComponent,
-        inFields: { 
-            noOfInfields = 2, 
-            filterField = "category", 
-            Component: InFields, 
-            HeaderComponent: InFieldsHeader 
+        inFields: {
+            noOfInfields = 2,
+            filterField = "category",
+            Component: InFields,
+            HeaderComponent: InFieldsHeader
         } = {},
-        popularProducts: { 
-            Component: PopularProductsComp, 
-            HeaderComponent: PopularProductsHeader 
+        popularProducts: {
+            Component: PopularProductsComp,
+            HeaderComponent: PopularProductsHeader
         } = {},
-        keywordSuggestions: { 
-            Component: KeywordSuggestionsComp, 
-            HeaderComponent: KeywordSuggestionsHeader 
+        keywordSuggestions: {
+            Component: KeywordSuggestionsComp,
+            HeaderComponent: KeywordSuggestionsHeader
         } = {},
-        trendingSearches: { 
-            Component: TrendingQueriesComp, 
-            HeaderComponent: TrendingQueriesHeader 
+        trendingSearches: {
+            Component: TrendingQueriesComp,
+            HeaderComponent: TrendingQueriesHeader
         } = {},
-        topQueries: { 
-            Component: TopQueriesComp, 
-            HeaderComponent: TopQueriesHeader 
+        topQueries: {
+            Component: TopQueriesComp,
+            HeaderComponent: TopQueriesHeader
         } = {},
-        promotedSuggestions: { 
-            Component: PromotedSuggestionsComp, 
-            HeaderComponent: PromotedSuggestionsHeader 
+        promotedSuggestions: {
+            Component: PromotedSuggestionsComp,
+            HeaderComponent: PromotedSuggestionsHeader
         } = {},
         onItemClick,
         onItemHover
     } = autosuggest || {};
-    
+
     // ✅ Use imported components as fallback, and ensure HeaderComponents are valid
     const PopularProductsComponent = PopularProductsComp || PopularProducts;
     const KeywordSuggestionsComponent = KeywordSuggestionsComp || KeywordSuggestions;
     const TrendingQueriesComponent = TrendingQueriesComp || TrendingQueries;
     const TopQueriesComponent = TopQueriesComp || TopQueries;
     const PromotedSuggestionsComponent = PromotedSuggestionsComp || PromotedSuggestions;
-    
+
     // ✅ Ensure HeaderComponents are valid functions, use DefaultHeader as fallback
     const PopularProductsHeaderComp = typeof PopularProductsHeader === 'function' ? PopularProductsHeader : DefaultHeader;
     const KeywordSuggestionsHeaderComp = typeof KeywordSuggestionsHeader === 'function' ? KeywordSuggestionsHeader : DefaultHeader;
@@ -63,18 +63,18 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
     const TopQueriesHeaderComp = typeof TopQueriesHeader === 'function' ? TopQueriesHeader : DefaultHeader;
     const PromotedSuggestionsHeaderComp = typeof PromotedSuggestionsHeader === 'function' ? PromotedSuggestionsHeader : DefaultHeader;
     const InFieldsHeaderComp = typeof InFieldsHeader === 'function' ? InFieldsHeader : DefaultHeader;
-    
+
     const {
         loading = false,
         autosuggestQuery = "",
         setAutosuggestQuery,
-        response: { 
-            trendingSearches = [], 
-            popularProducts = [], 
-            keywordSuggestions = [], 
-            inFields = [], 
-            topSearchSuggestions = [], 
-            promotedSuggestions = [] 
+        response: {
+            trendingSearches = [],
+            popularProducts = [],
+            keywordSuggestions = [],
+            inFields = [],
+            topSearchSuggestions = [],
+            promotedSuggestions = []
         } = {},
         fetchSearchData,
         searchResults = {},
@@ -130,7 +130,7 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
 
     return (
         <div className="autosuggest-wrapper">
-            {trendingSearches.length > 0 && (autosuggestQuery === "*" || autosuggestQuery === "") && TrendingQueriesComponent && (
+            {/* {trendingSearches.length > 0 && (autosuggestQuery === "*" || autosuggestQuery === "") && TrendingQueriesComponent && (
                 <TrendingQueriesComponent
                     headerText="Trending Queries:"
                     trendingQueries={trendingSearches}
@@ -139,6 +139,31 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
                     HeaderComponent={TrendingQueriesHeaderComp}
                     onItemClick={onItemClick}
                 />
+            )} */}
+            {trendingSearches.length > 0 && (autosuggestQuery === "*" || autosuggestQuery === "") && (
+                <div className="trending-queries">
+                    <div className="header">Trending Queries:</div>
+                    <div className="body">
+                        {trendingSearches.map((item, index) => (
+                            <div
+                                key={item.autosuggest}
+                                className="query"
+                                data-type="TRENDING_QUERIES"
+                                data-value={item.autosuggest}
+                                data-index={index + 1}
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={() => {
+
+                                    onItemClick && onItemClick(item);
+                                    hideAutosuggest();
+                                    setQuery(item.autosuggest);
+                                }}
+                            >
+                                {item.autosuggest}
+                            </div>
+                        ))}
+                    </div>
+                </div>
             )}
             {autosuggestQuery !== "*" && autosuggestQuery !== "" && (
                 <>
@@ -154,9 +179,10 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
                                     onItemClick={onItemClick}
                                 />
                             )}
+
                         </div>
                         <div className="side-tpl">
-                            {promotedSuggestions.length > 0 && PromotedSuggestionsComponent && (
+                            {/* {promotedSuggestions.length > 0 && PromotedSuggestionsComponent && (
                                 <PromotedSuggestionsComponent
                                     headerText="Promoted Suggestions:"
                                     hoveredQuery={hoveredQuery}
@@ -168,8 +194,33 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
                                     onItemClick={onItemClick}
                                     onItemHover={onItemHover}
                                 />
+                            )} */}
+                            {promotedSuggestions.length > 0 && (
+                                <div className="promoted-suggestions">
+                                    <div className="header">Promoted Suggestions:</div>
+                                    <div className="body">
+                                        {promotedSuggestions.map((item, index) => (
+                                            <div
+                                                key={item.autosuggest}
+                                                className="promoted-suggestion"
+                                                data-type="PROMOTED_SUGGESTION"
+                                                data-value={item.autosuggest}
+                                                data-index={index + 1}
+                                                onMouseDown={(e) => e.preventDefault()}
+                                                onMouseOver={() => handleHover(item.autosuggest, item)}
+                                                onClick={() => {
+                                                    onItemClick && onItemClick(item);
+                                                    setQuery(item.autosuggest);
+                                                    hideAutosuggest();
+                                                }}
+                                            >
+                                                {item.autosuggest}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             )}
-                            {topSearchSuggestions.length > 0 && TopQueriesComponent && (
+                            {/* {topSearchSuggestions.length > 0 && TopQueriesComponent && (
                                 <TopQueriesComponent
                                     headerText="Top Search Suggestions:"
                                     topQueries={topSearchSuggestions}
@@ -180,8 +231,33 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
                                     hoveredQuery={hoveredQuery}
                                     onHover={handleHover}
                                 />
+                            )} */}
+                            {topSearchSuggestions.length > 0 && (
+                                <div className="top-queries">
+                                    <div className="header">Top Search Suggestions:</div>
+                                    <div className="body">
+                                        {topSearchSuggestions.map((item, index) => (
+                                            <div
+                                                key={item.autosuggest}
+                                                className="top-query"
+                                                data-type="TOP_SEARCH_QUERIES"
+                                                data-value={item.autosuggest}
+                                                data-index={index + 1}
+                                                onMouseDown={(e) => e.preventDefault()}
+                                                onMouseOver={() => handleHover(item.autosuggest, item)}
+                                                onClick={() => {
+                                                    onItemClick && onItemClick(item);
+                                                    setQuery(item.autosuggest);
+                                                    hideAutosuggest();
+                                                }}
+                                            >
+                                                {item.autosuggest}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             )}
-                            {keywordSuggestions.length > 0 && KeywordSuggestionsComponent && (
+                            {/* {keywordSuggestions.length > 0 && KeywordSuggestionsComponent && (
                                 <KeywordSuggestionsComponent
                                     headerText="Keyword Suggestions:"
                                     keywordSuggestions={keywordSuggestions}
@@ -192,8 +268,34 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
                                     HeaderComponent={KeywordSuggestionsHeaderComp}
                                     onItemClick={onItemClick}
                                 />
+                            )} */}
+                            {keywordSuggestions.length > 0 && (
+                                <div className="keyword-suggestions">
+                                    <div className="header">Keyword Suggestions:</div>
+                                    <div className="body">
+                                        {keywordSuggestions.map((item, index) => (
+                                            <div
+                                                key={item.autosuggest}
+                                                className="keyword"
+                                                data-type="KEYWORD_SUGGESTION"
+                                                data-value={item.autosuggest}
+                                                data-index={index + 1}
+                                                onMouseDown={(e) => e.preventDefault()}
+                                                onMouseOver={() => handleHover(item.autosuggest, item)}
+                                                onClick={() => {
+                                                    onItemClick && onItemClick(item);
+                                                    setQuery(item.autosuggest);
+                                                    hideAutosuggest();
+                                                }}
+                                            >
+                                                {item.autosuggest}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             )}
-                            {inFields.length > 0 && InFields && (
+                            {/* {inFields.length > 0 && InFields && (
+                                console.log("inFields:", inFields),
                                 <InFields
                                     headerText="InField Suggestions:"
                                     inFields={inFields}
@@ -205,6 +307,33 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
                                     HeaderComponent={InFieldsHeaderComp}
                                     onItemClick={onItemClick}
                                 />
+                            )} */}
+                            {inFields.length > 0 && (
+                                console.log("inFields:", inFields),
+                                <div className="infields-wrapper">
+                                    <div className="header">InField Suggestions:</div>
+                                    <div className="body">
+                                        {inFields.slice(0, noOfInfields).map((item, index) => (
+                                            <div
+                                                key={item.autosuggest + index}
+                                                className="infield"
+                                                data-type="IN_FIELD"
+                                                data-value={item.autosuggest}
+                                                data-index={index + 1}
+                                                onMouseDown={(e) => e.preventDefault()}
+                                                onMouseOver={() => handleHover(item.autosuggest, item)}
+                                                onClick={() => {
+                                                    onItemClick && onItemClick(item);
+                                                    setQuery(item.autosuggest);
+                                                    hideAutosuggest();
+                                                }}
+                                            >
+                                                <div className="infield-title">{item.autosuggest}</div>
+                                                <div className="fields"></div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             )}
                         </div>
                         {(products.length == 0 &&
@@ -212,8 +341,8 @@ const AutosuggestComponent = ({ autosuggest, response, hideAutosuggest, setQuery
                             && topSearchSuggestions.length == 0
                             && keywordSuggestions.length == 0
                             && inFields.length == 0) && (
-                            <AutosuggestNoResult autosuggestQuery={hoveredQuery} />
-                        )}
+                                <AutosuggestNoResult autosuggestQuery={hoveredQuery} />
+                            )}
                     </div>
 
                     {!(products.length == 0 && promotedSuggestions.length == 0 && topSearchSuggestions.length == 0 && keywordSuggestions.length == 0 && inFields.length == 0) && (

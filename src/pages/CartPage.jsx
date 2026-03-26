@@ -1,33 +1,21 @@
 import { useOutletContext, useNavigate } from 'react-router';
 import { UnbxdRecsCSRWrapper } from "@unbxd-ui/react-recs-hooks";
 import RecommendationsDisplay from './RecommendationsDisplay';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 const CartPage = () => {
-    const { cartItems, removeFromCart, clearCart, cartCount, updateQuantity, placeOrder } = useOutletContext();
-    const [showOrderSuccess, setShowOrderSuccess] = useState(false);
+    const { cartItems, removeFromCart, clearCart, cartCount, updateQuantity } = useOutletContext();
+    // const [showOrderSuccess, setShowOrderSuccess] = useState(false);
 
     const handlePlaceOrder = () => {
-        placeOrder();
-        setShowOrderSuccess(true);
+      
+        navigate('/order');
+        clearCart();
+
     };
     const navigate = useNavigate();
 
-    if (showOrderSuccess) {
-        return (
-            <div className="order-success-overlay">
-                <div className="order-success-modal">
-                    <div className="order-success-icon">🎉</div>
-                    <h2>Congratulations!</h2>
-                    <p>Your order has been placed successfully.</p>
-                    <div className="order-success-btns">
-                        <button onClick={() => navigate('/orders')}>View Orders</button>
-                        <button onClick={() => navigate('/search')}>Continue Shopping</button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+
     if (cartItems.length === 0) {
         return (
             <div className="cart-empty">

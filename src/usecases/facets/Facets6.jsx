@@ -76,7 +76,7 @@ const Facets6 = () => {
                                             }
                                         }}
                                     />
-                                    {option.value} ({option.count})
+                                    <span className="facet-value-text">{option.value}</span> ({option.count})
                                 </div>
                             ))}
                         </div>

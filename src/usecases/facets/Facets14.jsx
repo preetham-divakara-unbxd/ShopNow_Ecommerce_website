@@ -256,7 +256,7 @@ const Facets14 = () => {
                                                 handleTempSelection(facetName, optionValue, e.target.checked);
                                             }}
                                         />
-                                        {displayText}
+                                        <span className="facet-value-text">{displayText}</span>
                                     </label>
                                 );
                             })}

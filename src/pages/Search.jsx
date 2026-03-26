@@ -44,11 +44,14 @@ import RefreshButton from "../components/RefreshButton";
 import InfiniteScroll1 from "../usecases/loadmorepagination/InfiniteScroll1";
 import Counter from "../usecases/loadmorepagination/Counter";
 import ChatbotPanel from '../pages/ChatbotPanel';
+import AutosuggestComponent from "../components/AutosuggestComponent";
 
 // import VisualSearchComponent from '../components/VisualSearchComponent';
 
 
+// import styles for the component
 import "@unbxd-ui/react-search-components/styles/searchbox.css";
+import "@unbxd-ui/react-search-components/styles/autosuggest.css";
 import "@unbxd-ui/react-search-components/styles/summary.css";
 import "@unbxd-ui/react-search-components/styles/products.css";
 import "@unbxd-ui/react-search-components/styles/facets.css";
@@ -67,6 +70,7 @@ import "@unbxd-ui/react-search-components/styles/infiniteScrollPagination.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router';
 // require.resolve("@unbxd-ui/react-search-components/styles/loadMorePagination.css");
+
 
 const LoaderComponent = ({ className }) => {
     return <div className={className}>
@@ -216,7 +220,10 @@ function Search() {
                         debounce={true}
                         delay={300}
                         showClear={true}
-                        autosuggest={{ enabled: true }}
+                        autosuggest={{
+                            enabled: true,
+                            AutosuggestComponent: AutosuggestComponent,
+                        }}
                     />
                 </div>
                 <div className="breadcrumb-row">

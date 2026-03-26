@@ -10,6 +10,7 @@ import CartPage from './pages/CartPage';
 import analyticsConfig from './analytics/metadata.json';
 import siteConfig from './analytics/config';
 import OrdersPage from './pages/OrdersPage';
+import Order from "./pages/Order";
 
 
 
@@ -28,23 +29,6 @@ function Layout() {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
   });
-  const [orders, setOrders] = useState(() => {
-    const saved = localStorage.getItem('orders');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const placeOrder = () => {
-    if (cartItems.length === 0) return;
-    const newOrder = {
-      id: Date.now(),
-      items: [...cartItems],
-      total: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-      date: new Date().toLocaleDateString(),
-    };
-    const updatedOrders = [newOrder, ...orders];
-    setOrders(updatedOrders);
-    localStorage.setItem('orders', JSON.stringify(updatedOrders));
-    clearCart();
-  };
   const addToCart = (product) => {
     setCartItems(prev => {
       const exists = prev.find(item => item.uniqueId === product.uniqueId);
@@ -97,7 +81,7 @@ function Layout() {
         updateQuantity={updateQuantity}
         removeFromCart={removeFromCart}
       />
-      <Outlet context={{ activeUsecases, cartItems, addToCart, removeFromCart, clearCart, cartCount, updateQuantity, orders, placeOrder }} />
+      <Outlet context={{ activeUsecases, cartItems, addToCart, removeFromCart, clearCart, cartCount, updateQuantity }} />
     </>
   );
 }
@@ -105,11 +89,8 @@ function Layout() {
 function App() {
 
   const navigate = useNavigate();
-  // useEffect(()=>{
-  //   window.UnbxdSiteName= analyticsConfig.siteName;
-  //   window.UnxAnalyticsConfig = { ...siteConfig, metaData: analyticsConfig };
+ 
 
-  // })
   useEffect(() => {
     window.UnbxdSiteName = analyticsConfig.siteName;
     window.UnxAnalyticsConfig = { ...siteConfig, metaData: analyticsConfig };
@@ -264,7 +245,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/product/:productId" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/order" element={<Order />} />
           </Route>
         </Routes>
       </UnbxdSearchCSRWrapper >
