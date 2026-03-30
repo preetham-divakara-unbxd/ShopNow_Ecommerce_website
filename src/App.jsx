@@ -9,7 +9,7 @@ import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import analyticsConfig from './analytics/metadata.json';
 import siteConfig from './analytics/config';
-import OrdersPage from './pages/OrdersPage';
+
 import Order from "./pages/Order";
 
 

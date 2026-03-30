@@ -337,6 +337,16 @@ const siteConfig = {
             }
 
         },
+        {
+            triggers: {
+                sortElem: ".facet-group .sort-radio-label",
+            },
+            value: {
+                selector: ".facet-group .facet-value-text"
+            }
+
+        },
+       
     ],
     pageView: {
         delay: "1500",

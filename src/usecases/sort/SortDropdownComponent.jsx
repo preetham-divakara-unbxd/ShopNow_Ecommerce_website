@@ -16,7 +16,7 @@ const SortDropdownComponent = () => {
 
     return (
         <div className="sort-root">
-            <label>Sort By: </label>
+            <p>Sort By: </p>
             <select
                 value={sort}
                 onChange={handleSortChange}
