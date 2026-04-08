@@ -122,7 +122,9 @@ const ProductHover = ({ product }) => {
                             <img
                                 key={i}
                                 src={variant.v_imageUrl?.[0]}
-                                onClick={() => setActiveImage(variant.v_imageUrl?.[0])}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveImage(variant.v_imageUrl?.[0])}}
                                 className={activeImage === variant.v_imageUrl?.[0] ? 'active' : ''}
                             />
                         ))}
@@ -139,6 +141,7 @@ const ProductHover = ({ product }) => {
         </div>
     );
 };
+
 const ProductHover1 = ({ product }) => {
     const navigate = useNavigate();
     const { idx, uniqueId, title, price, imageUrl, variants } = product;
@@ -171,7 +174,10 @@ const ProductHover1 = ({ product }) => {
                                 <img
                                     key={i}
                                     src={variant.v_imageUrl?.[0]}
-                                    onClick={() => setActiveImage(variant.v_imageUrl?.[0])}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveImage(variant.v_imageUrl?.[0]);
+                                    }}
                                     className={activeImage === variant.v_imageUrl?.[0] ? 'active' : ''}
                                 />
                             ))}
@@ -356,14 +362,14 @@ function Search() {
                         {/* <ProductViewSMLComponent /> */}
 
                         {/* <FixedPagination1 /> */}
-                        {/* {renderProductView()} */}
-                        <button className="filters-toggle-btn" onClick={() => setShowFiltersSidebar(true)}>
+                        {renderProductView()}
+                        {/* <button className="filters-toggle-btn" onClick={() => setShowFiltersSidebar(true)}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" />
                                 <circle cx="8" cy="6" r="2" fill="currentColor" /><circle cx="16" cy="12" r="2" fill="currentColor" /><circle cx="10" cy="18" r="2" fill="currentColor" />
                             </svg>
                             Filters
-                        </button>
+                        </button> */}
 
                     </div>
                     <div className="pagesize-control">
@@ -395,8 +401,8 @@ function Search() {
                         {/* <SortDropdownComponent /> */}
                         {/* <SortRadiobuttonsComponent /> */}
                         {/* <SortIconsComponent /> */}
-                        {/* {renderSort()} */}
-                        {renderProductView()}
+                        {renderSort()}
+                        {/* {renderProductView()} */}
                     </div>
                 </div>
                 <div className="selected-facets-row">
@@ -480,15 +486,10 @@ function Search() {
 
                         {/* <Facets13/> */}
                         {/* <Facets14 /> */}
-                        {/* {!isDropdownFacet && renderFacets()} */}
+                        {!isDropdownFacet && renderFacets()}
 
                         {/* </div> */}
-                        {/* <div className={`sidebar-facets-panel ${showFiltersSidebar ? 'open' : ''}`}>
-                            <Facets15
-                                onClose={() => setShowFiltersSidebar(false)}
-                                sortComponent={renderSort()}
-                            />
-                        </div> */}
+                        
                         <div>
                             {/* <InfiniteScrollPagination LoaderComponent={LoaderComponent3} styles={{ wrapper: "infinite-scroll-pagination-wrapper", preLoader: "loader", postLoader: "loader" }}> 
                             <Products ProductComponent={ProductHover} />
@@ -560,7 +561,7 @@ function Search() {
             {isChatOpen && (
                 <ChatbotPanel onClose={() => setIsChatOpen(false)} />
             )}
-            {showFiltersSidebar && (
+            {/* {showFiltersSidebar && (
                 <div className="filters-sidebar-overlay" onClick={() => setShowFiltersSidebar(false)}>
                     <div className="filters-sidebar" onClick={(e) => e.stopPropagation()}>
                         <Facets15
@@ -569,7 +570,7 @@ function Search() {
                         />
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     )
 }

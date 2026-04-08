@@ -222,7 +222,7 @@ function App() {
           },
           variants: {
             enabled: true,
-            count: 5,
+            count: 3,
             attributes: ["title", "v_imageUrl", "v_title"],
             mapping: { image_url: "v_imageUrl" }
           },
