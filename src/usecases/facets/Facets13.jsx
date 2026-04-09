@@ -79,7 +79,7 @@ const Facets13 = () => {
 
                     return (
                         <div key={facetName} className="facet-group">
-                            <h3>{facet.displayName}</h3>
+                            <div className='facets-displayName'>{facet.displayName}</div>
                             {hasSelectedValues && (
                                 <div className="facet-selected-values">
                                     <span className="selected-label">Selected:</span>
@@ -143,7 +143,7 @@ const Facets13 = () => {
                                                 handleTempSelection(facetName, optionValue, e.target.checked);
                                             }}
                                         />
-                                        {displayText}
+                                       <span className="facet-value-text">{displayText}</span>
                                     </label>
                                 );
                             })}

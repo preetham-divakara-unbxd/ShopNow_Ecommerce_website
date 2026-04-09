@@ -1,5 +1,7 @@
 import { SearchBox, Summary, Banner, Products, Image, Facets, RangeFacet, SelectedFacets, CheckboxFacet, MultilevelFacet, ProductViewRadioButtons, ProductViewButtons, PageSize, SortButtons, LoadMorePagination, FixedPagination, InfiniteScrollPagination, Breadcrumb } from "@unbxd-ui/react-search-components"
+import { Chat, InputBar, ConversationList } from "@unbxd-ui/react-shopping-assistant-components";
 // import { useProductView } from "@unbxd-ui/react-search-hooks";
+import QuickViewModal from '../components/QuickViewModal';
 import { useOutletContext } from 'react-router';
 import SummaryComponent from '../components/SummaryComponent'
 import PaginationComponent from "../components/PaginationComponent";
@@ -37,14 +39,21 @@ import Facets11 from "../usecases/facets/Facets11";
 import Facets12 from "../usecases/facets/Facets12";
 import Facets13 from "../usecases/facets/Facets13";
 import Facets14 from "../usecases/facets/Facets14";
+import Facets15 from "../usecases/facets/Facets15";
 import PageSizeDropdown from "../usecases/pagesize/PageSizeDropdown";
 import RefreshButton from "../components/RefreshButton";
 import InfiniteScroll1 from "../usecases/loadmorepagination/InfiniteScroll1";
 import Counter from "../usecases/loadmorepagination/Counter";
+import ChatbotPanel from '../pages/ChatbotPanel';
+import AutosuggestComponent from "../components/AutosuggestComponent";
+import QuantityControls from '../components/QuantityControls';
+
 // import VisualSearchComponent from '../components/VisualSearchComponent';
 
 
+// import styles for the component
 import "@unbxd-ui/react-search-components/styles/searchbox.css";
+import "@unbxd-ui/react-search-components/styles/autosuggest.css";
 import "@unbxd-ui/react-search-components/styles/summary.css";
 import "@unbxd-ui/react-search-components/styles/products.css";
 import "@unbxd-ui/react-search-components/styles/facets.css";
@@ -60,8 +69,10 @@ import "@unbxd-ui/react-search-components/styles/breadcrumb.css";
 import "@unbxd-ui/react-search-components/styles/multilevelFacet.css";
 import "@unbxd-ui/react-search-components/styles/selectedFacets.css";
 import "@unbxd-ui/react-search-components/styles/infiniteScrollPagination.css";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router';
 // require.resolve("@unbxd-ui/react-search-components/styles/loadMorePagination.css");
+
 
 const LoaderComponent = ({ className }) => {
     return <div className={className}>
@@ -81,15 +92,22 @@ const LoaderComponent3 = ({ className }) => {
     </div>
 };
 const ProductHover = ({ product }) => {
+    const navigate = useNavigate();
     const { idx, uniqueId, title, price, imageUrl, variants } = product;
     const [activeImage, setActiveImage] = useState(imageUrl?.[0]);
+    const { addToCart } = useOutletContext();
 
     return (
         <div
             data-prank={idx}
+            data-unxItem="product"
+            data-unxId={uniqueId}
             key={uniqueId}
             className="product-card"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/product/${uniqueId}`, { state: { product } });
+            }}
             style={{ cursor: "pointer" }}
         >
             <Image imageUrl={activeImage} hoverImageUrl={activeImage} />
@@ -99,28 +117,117 @@ const ProductHover = ({ product }) => {
                 <div className="product-price">${price}</div>
                 {variants && variants.length > 0 && (
                     <div className="variant-thumbnails">
-                       
+
                         {variants.map((variant, i) => (
                             <img
                                 key={i}
                                 src={variant.v_imageUrl?.[0]}
-                                onClick={() => setActiveImage(variant.v_imageUrl?.[0])}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveImage(variant.v_imageUrl?.[0])}}
                                 className={activeImage === variant.v_imageUrl?.[0] ? 'active' : ''}
                             />
                         ))}
                     </div>
                 )}
+                <button className="search-page-add-to-cart"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                    }}>
+                    Add to Cart
+                </button>
             </div>
         </div>
     );
 };
 
+const ProductHover1 = ({ product }) => {
+    const navigate = useNavigate();
+    const { idx, uniqueId, title, price, imageUrl, variants } = product;
+    const [activeImage, setActiveImage] = useState(imageUrl?.[0]);
+    const { addToCart, updateQuantity, removeFromCart, cartItems } = useOutletContext();
+    const cartItem = cartItems.find(item => item.uniqueId === uniqueId);
+    const [showQuickView, setShowQuickView] = useState(false);
+
+    return (
+        <>
+            <div
+                data-prank={idx}
+                data-unxItem="product"
+                data-unxId={uniqueId}
+                key={uniqueId}
+                className="product-card"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/product/${uniqueId}`, { state: { product } });
+                }}
+                style={{ cursor: "pointer" }}
+            >
+                <Image imageUrl={activeImage} hoverImageUrl={activeImage} />
+                <div className="product-description">
+                    <h3 className="product-title">{title}</h3>
+                    <div className="product-price">${price}</div>
+                    {variants && variants.length > 0 && (
+                        <div className="variant-thumbnails">
+                            {variants.map((variant, i) => (
+                                <img
+                                    key={i}
+                                    src={variant.v_imageUrl?.[0]}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveImage(variant.v_imageUrl?.[0]);
+                                    }}
+                                    className={activeImage === variant.v_imageUrl?.[0] ? 'active' : ''}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    <div className="product-card-buttons">
+                        <button
+                            className="quick-view-btn"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setShowQuickView(true);
+                            }}
+                        >
+                            Quick View
+                        </button>
+                        {cartItem ? (
+                            <QuantityControls
+                                quantity={cartItem.quantity}
+                                onIncrease={() => updateQuantity(uniqueId, 1)}
+                                onDecrease={() => cartItem.quantity === 1 ? removeFromCart(uniqueId) : updateQuantity(uniqueId, -1)}
+                            />
+                        ) : (
+                            <button
+                                className="search-page-add-to-cart"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    addToCart(product);
+                                }}
+                            >
+                                Add to Cart
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
+            {showQuickView && (
+                <QuickViewModal
+                    product={product}
+                    onClose={() => setShowQuickView(false)}
+                />
+            )}
+        </>
+    );
+};
 function Search() {
     const { activeUsecases } = useOutletContext();
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [showFiltersSidebar, setShowFiltersSidebar] = useState(false);
 
-useEffect(()=>{
- console.log("triggered");
-},[])
+
 
     const renderPagination = () => {
         switch (activeUsecases.pagination) {
@@ -189,7 +296,8 @@ useEffect(()=>{
             <div className="search-container">
 
                 <div className="search-box-wrapper">
-                    <Counter />
+
+
                     <RefreshButton />
                     <SearchBox
                         showSubmitButton={true}
@@ -197,7 +305,11 @@ useEffect(()=>{
                         debounce={true}
                         delay={300}
                         showClear={true}
-                        autosuggest={{ enabled: true }}
+                      
+                        autosuggest={{
+                            enabled: true,
+                            AutosuggestComponent: AutosuggestComponent,
+                        }}
                     />
                 </div>
                 <div className="breadcrumb-row">
@@ -251,6 +363,13 @@ useEffect(()=>{
 
                         {/* <FixedPagination1 /> */}
                         {renderProductView()}
+                        {/* <button className="filters-toggle-btn" onClick={() => setShowFiltersSidebar(true)}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" />
+                                <circle cx="8" cy="6" r="2" fill="currentColor" /><circle cx="16" cy="12" r="2" fill="currentColor" /><circle cx="10" cy="18" r="2" fill="currentColor" />
+                            </svg>
+                            Filters
+                        </button> */}
 
                     </div>
                     <div className="pagesize-control">
@@ -283,6 +402,7 @@ useEffect(()=>{
                         {/* <SortRadiobuttonsComponent /> */}
                         {/* <SortIconsComponent /> */}
                         {renderSort()}
+                        {/* {renderProductView()} */}
                     </div>
                 </div>
                 <div className="selected-facets-row">
@@ -358,24 +478,32 @@ useEffect(()=>{
                     {/* <Products ProductComponent={ProductHover}  /> */}
 
                     <div className="sidebar-content-wrapper">
-                        <div>
-                            {/* <Facets6 /> */}
-                            {/* <Facets10 /> */}
-                            {/* <Facets11/> */}
-                            {/* <Facets12 /> */}
+                        {/* <div> */}
+                        {/* <Facets6 /> */}
+                        {/* <Facets10 /> */}
+                        {/* <Facets11/> */}
+                        {/* <Facets12 /> */}
 
-                            {/* <Facets13/> */}
-                            {/* <Facets14 /> */}
-                            {!isDropdownFacet && renderFacets()}
-                        </div>
+                        {/* <Facets13/> */}
+                        {/* <Facets14 /> */}
+                        {!isDropdownFacet && renderFacets()}
+
+                        {/* </div> */}
+                        
                         <div>
                             {/* <InfiniteScrollPagination LoaderComponent={LoaderComponent3} styles={{ wrapper: "infinite-scroll-pagination-wrapper", preLoader: "loader", postLoader: "loader" }}> 
                             <Products ProductComponent={ProductHover} />
                              </InfiniteScrollPagination> */}
 
                             {/* <InfiniteScroll1> */}
-                                <Products ProductComponent={ProductHover} />
-                            {/* </InfiniteScroll1> */}
+                            {/* <Products ProductComponent={ProductHover} /> */}
+                            {/* </InfiniteScroll1>  */}
+                            {/* <LoadMore1>
+                                 <Products ProductComponent={ProductHover} />
+                            </LoadMore1> */}
+                            <LoadMorePagination LoaderComponent={LoaderComponent3} >
+                                <Products ProductComponent={ProductHover1} />
+                            </LoadMorePagination>
 
                         </div>
                     </div>
@@ -384,7 +512,7 @@ useEffect(()=>{
                         {/* <PaginationComponent /> */}
 
                         {/* <InfiniteScrollPagination LoaderComponent={LoaderComponent3} styles={{ wrapper: "infinite-scroll-pagination-wrapper", preLoader: "loader", postLoader: "loader" }}/> */}
-                 
+
 
                         {/* <LoadMorePagination LoaderComponent={LoaderComponent3} >
                             <Products ProductComponent={ProductHover} />
@@ -412,14 +540,37 @@ useEffect(()=>{
                         {/* for fixed pagination 6 is included inside  <FixedPagination1 /> */}
                         {/* for fixed pagination 7 uncomment <FixedPagination1 /> in product view */}
 
-                        {/* <LoadMore1 /> */}
+                        {/*<LoadMore1/>*/}
+
                         {/* <LoadMore2 /> */}
                         {/* <LoadMore3 /> */}
-                          {/* <InfiniteScroll1/> */}
-                        {renderPagination()}
+                        {/* <InfiniteScroll1/> */}
+                        {/* {renderPagination()} */}
                     </div>
                 </div>
             </div>
+
+            <button
+                className="chatbot-fab"
+                onClick={() => setIsChatOpen(prev => !prev)}
+                title="Chat Assistant"
+            >
+                {isChatOpen ? '✕' : '🤖'}
+            </button>
+
+            {isChatOpen && (
+                <ChatbotPanel onClose={() => setIsChatOpen(false)} />
+            )}
+            {/* {showFiltersSidebar && (
+                <div className="filters-sidebar-overlay" onClick={() => setShowFiltersSidebar(false)}>
+                    <div className="filters-sidebar" onClick={(e) => e.stopPropagation()}>
+                        <Facets15
+                            onClose={() => setShowFiltersSidebar(false)}
+
+                        />
+                    </div>
+                </div>
+            )} */}
         </div>
     )
 }

@@ -5,11 +5,13 @@ import "@unbxd-ui/react-search-components/styles/searchbox.css"
 import "@unbxd-ui/react-search-components/styles/autosuggest.css";
 import SearchComponent from './SearchComponent'
 import AutosuggestComponent from './AutosuggestComponent'
+
 import { useState } from 'react'
 
-function Header({ activeUsecases, setActiveUsecases }) {
+function Header({ activeUsecases, setActiveUsecases, cartCount, cartItems, updateQuantity, removeFromCart }) {
 
     const [hoveredPill, setHoveredPill] = useState(null);
+    const [showCartPopup, setShowCartPopup] = useState(false);
 
     const paginationOptions = [
         {
@@ -30,11 +32,11 @@ function Header({ activeUsecases, setActiveUsecases }) {
                 { key: 'FixedPagination5', label: 'Compact', description: 'Minimal compact pagination' },
             ]
         },
-          {
-            group: 'INFINITE SCROLL', 
+        {
+            group: 'INFINITE SCROLL',
             items: [
                 { key: 'InfiniteScroll1', label: 'Basic Infinite Scroll', description: 'Basic infinite scroll behavior' },
-                
+
             ]
         }
     ];
@@ -291,7 +293,53 @@ function Header({ activeUsecases, setActiveUsecases }) {
                             </div>
                         )}
                     </div>
+                    <div
+                        className="header-cart-wrapper"
+                        onMouseEnter={() => setShowCartPopup(true)}
+                        onMouseLeave={() => setShowCartPopup(false)}
+                    >
+                        <Link to="/cart" className="header-cart-btn">
+                            🛒
+                            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                        </Link>
+                        {showCartPopup && (
+                            <div className="cart-popup">
+                                 <div className="cart-popup-heading">Your Cart ({cartItems.length})</div>
+                                {cartItems.length === 0 ? (
+                                    <div className="cart-popup-empty">Your cart is empty</div>
+                                ) : (
+                                    <>
+                                        <div className="cart-popup-items">
+                                            {cartItems.slice(-2).reverse().map(item => (
+                                                <div key={item.uniqueId} className="cart-popup-item">
+                                                    <img className="cart-popup-item-img" src={item.imageUrl?.[0] || item.imageUrl} alt={item.title} />
+                                                    <div className="cart-popup-item-info">
+                                                        <div className="cart-popup-item-title">{item.title}</div>
+                                                        <div className="cart-popup-item-price">${item.price}</div>
+                                                        <div className="cart-popup-item-actions">
+                                                            <div className="cart-popup-qty-controls">
+                                                                <button className="cart-popup-qty-btn" onClick={() => updateQuantity(item.uniqueId, -1)} disabled={item.quantity <= 1}>−</button>
+                                                                <span className="cart-popup-qty-value">{item.quantity}</span>
+                                                                <button className="cart-popup-qty-btn" onClick={() => updateQuantity(item.uniqueId, 1)}>+</button>
+                                                            </div>
+                                                            <button className="cart-popup-remove-btn" onClick={() => removeFromCart(item.uniqueId)}>Remove</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {cartItems.length > 2 && (
+                                            <div className="cart-popup-more">+{cartItems.length - 2} more items</div>
+                                        )}
+                                        <Link to="/cart" className="cart-popup-view-all">View Cart ({cartItems.length})</Link>
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                    {/* <Link to="/orders" className="header-orders-btn"> 📦</Link> */}
                 </div>
+
             </div>
         </header>
     )

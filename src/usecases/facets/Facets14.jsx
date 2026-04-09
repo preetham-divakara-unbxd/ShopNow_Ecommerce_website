@@ -1,11 +1,19 @@
-import { useFacets,useProducts } from '@unbxd-ui/react-search-hooks';
+import { useFacets, useProducts } from '@unbxd-ui/react-search-hooks';
 import { useState } from 'react';
+import { useSorting } from "@unbxd-ui/react-search-hooks";
 //with range facet same as facet10
 const Facets14 = () => {
     const { facets, selectedFacets, addMultipleFacets, getFacetByName, clearFacet, removeFacet, addFacet } = useFacets();
     const [tempSelections, setTempSelections] = useState({});
     const { numberOfProducts } = useProducts();
 
+    const { sort, setSort, sortOptions } = useSorting()
+    const [sortOpen, setSortOpen] = useState(false);
+
+    const options = [
+        { value: "price desc", label: "Price: High to Low" },
+        { value: "price asc", label: "Price: Low to High" },
+    ];
     const [openFacets, setOpenFacets] = useState({});
     const toggleFacet = (facetName) => {
         setOpenFacets(prev => ({
@@ -14,7 +22,7 @@ const Facets14 = () => {
         }));
     };
 
-     if(numberOfProducts === 0){
+    if (numberOfProducts === 0) {
         return null;
     }
     // //console.log("selected", selectedFacets);
@@ -99,7 +107,31 @@ const Facets14 = () => {
                     <button className="facets10-clear-btn" onClick={clearAllFilters}>Clear All</button>
                 )}
             </div>
-
+            <div className="facet-group">
+                <div
+                    className="UNX-dropdown-activator facets-header"
+                    onClick={() => setSortOpen(!sortOpen)}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <div className="facets-displayName">Sort By</div>
+                    <div className="facets-icon">⌄</div>
+                </div>
+                {sortOpen && (
+                    <div>
+                        {options.map(option => (
+                            <label key={option.value} className="sort-radio-label">
+                                <input
+                                    type="radio"
+                                    name="sort"
+                                    checked={option.value === sort}
+                                    onChange={() => setSort(option.value)}
+                                />
+                                <span className="facet-value-text">{option.label}</span>
+                            </label>
+                        ))}
+                    </div>
+                )}
+            </div>
             {Object.keys(facets).map(facetKey => {
                 const facetkey = facets[facetKey];
                 // //console.log("facets[facetKey]", facetkey);
@@ -119,7 +151,7 @@ const Facets14 = () => {
                     const selectedValues = selectedFacets[facetName]?.values || [];
                     const hasSelectedValues = selectedValues.length > 0;
 
-    
+
                     const existingValue = isMultilevelFacet ? selectedFacets[facetName]?.values?.[0] : null;
                     const pathParts = existingValue ? existingValue.split('>') : [];
                     const lastPart = pathParts[pathParts.length - 1];
@@ -141,125 +173,125 @@ const Facets14 = () => {
                             </div>
                             {openFacets[facetName] && (<>
 
-                            
-                            {hasSelectedValues && (
-                                <div className="facet-selected-values">
-                                    <span className="selected-label">Selected:</span>
-                                    <span className="selected-values-text">
-                                        {isRangeFacet
-                                            ? selectedValues.map(v =>
-                                                typeof v === 'object' && v.start && v.end
-                                                    ? `$${v.start} - $${v.end}`
-                                                    : v
-                                            ).join(', ')
-                                            : selectedValues.join(', ')
-                                        }
-                                    </span>
-                                </div>
-                            )}
-                            {isMultilevelFacet && (
-                                <div className="multilevel-facet-options">
-                                    {breadcrumbParts.map((part, index) => (
-                                        <div
-                                            key={`breadcrumb-${index}`}
-                                            className="multilevel-facet-item selected"
-                                            style={{ paddingLeft: `${index * 20}px` }}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                if (index === 0) {
-                                                    clearFacet(facetName);
-                                                } else {
-                                                    const parentPath = pathParts.slice(0, index).join('>');
-                                                    addFacet(facetName, [parentPath]);
-                                                }
-                                            }}
-                                        >
-                                            <span className="multilevel-icon">−</span>
-                                            <span className="multilevel-label bold">{part}</span>
-                                        </div>
-                                    ))}
 
-                                    {facet.values.map((option, index) => {
-                                        const isSelectedLeaf = isLeaf && option.name === lastPart;
-                                        const fullPath = basePath
-                                            ? basePath + '>' + option.name
-                                            : option.name;
-
-                                        return (
+                                {hasSelectedValues && (
+                                    <div className="facet-selected-values">
+                                        <span className="selected-label">Selected:</span>
+                                        <span className="selected-values-text">
+                                            {isRangeFacet
+                                                ? selectedValues.map(v =>
+                                                    typeof v === 'object' && v.start && v.end
+                                                        ? `$${v.start} - $${v.end}`
+                                                        : v
+                                                ).join(', ')
+                                                : selectedValues.join(', ')
+                                            }
+                                        </span>
+                                    </div>
+                                )}
+                                {isMultilevelFacet && (
+                                    <div className="multilevel-facet-options">
+                                        {breadcrumbParts.map((part, index) => (
                                             <div
-                                                key={option.name || index}
-                                                className={`multilevel-facet-item ${isSelectedLeaf ? 'selected' : ''}`}
-                                                style={{ paddingLeft: `${optionsIndent * 20}px` }}
+                                                key={`breadcrumb-${index}`}
+                                                className="multilevel-facet-item selected"
+                                                style={{ paddingLeft: `${index * 20}px` }}
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     e.stopPropagation();
-                                                    if (isSelectedLeaf) {
-                                                        const parentPath = pathParts.slice(0, -1).join('>');
-                                                        if (parentPath) {
-                                                            addFacet(facetName, [parentPath]);
-                                                        } else {
-                                                            clearFacet(facetName);
-                                                        }
+                                                    if (index === 0) {
+                                                        clearFacet(facetName);
                                                     } else {
-                                                        addFacet(facetName, [fullPath]);
+                                                        const parentPath = pathParts.slice(0, index).join('>');
+                                                        addFacet(facetName, [parentPath]);
                                                     }
                                                 }}
                                             >
-                                                <span className="multilevel-icon">
-                                                    {isSelectedLeaf ? '−' : '+'}
-                                                </span>
-                                                <span className={isSelectedLeaf ? 'multilevel-label bold' : 'multilevel-label'}>
-                                                    {option.name}
-                                                </span>
-                                                <span className="multilevel-count">({option.count})</span>
+                                                <span className="multilevel-icon">−</span>
+                                                <span className="multilevel-label bold">{part}</span>
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                            {!isMultilevelFacet && facet.values.map(option => {
+                                        ))}
 
-                                let displayText;
-                                let optionValue;
-                                if (isRangeFacet) {
+                                        {facet.values.map((option, index) => {
+                                            const isSelectedLeaf = isLeaf && option.name === lastPart;
+                                            const fullPath = basePath
+                                                ? basePath + '>' + option.name
+                                                : option.name;
 
-                                    displayText = `$${option.start} - $${option.end} (${option.count})`;
-                                    optionValue = option;
-                                } else {
+                                            return (
+                                                <div
+                                                    key={option.name || index}
+                                                    className={`multilevel-facet-item ${isSelectedLeaf ? 'selected' : ''}`}
+                                                    style={{ paddingLeft: `${optionsIndent * 20}px` }}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        if (isSelectedLeaf) {
+                                                            const parentPath = pathParts.slice(0, -1).join('>');
+                                                            if (parentPath) {
+                                                                addFacet(facetName, [parentPath]);
+                                                            } else {
+                                                                clearFacet(facetName);
+                                                            }
+                                                        } else {
+                                                            addFacet(facetName, [fullPath]);
+                                                        }
+                                                    }}
+                                                >
+                                                    <span className="multilevel-icon">
+                                                        {isSelectedLeaf ? '−' : '+'}
+                                                    </span>
+                                                    <span className={isSelectedLeaf ? 'multilevel-label bold' : 'multilevel-label'}>
+                                                        {option.name}
+                                                    </span>
+                                                    <span className="multilevel-count">({option.count})</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                                {!isMultilevelFacet && facet.values.map(option => {
 
-                                    displayText = `${option.value} (${option.count})`;
-                                    optionValue = option.value;
-                                }
-                                // const isSelected = selectedFacets[facetName]?.values?.includes(option.value) || false;
-                                // const isPending = tempSelections[facetName]?.includes(option.value) || false;
-                                const isSelected = isRangeFacet
-                                    ? selectedFacets[facetName]?.values?.some(v =>
-                                        typeof v === 'object' && v.start === option.start && v.end === option.end
-                                    ) || false
-                                    : selectedFacets[facetName]?.values?.includes(option.value) || false;
+                                    let displayText;
+                                    let optionValue;
+                                    if (isRangeFacet) {
 
-                                const isPending = isRangeFacet
-                                    ? tempSelections[facetName]?.some(v =>
-                                        typeof v === 'object' && v.start === option.start && v.end === option.end
-                                    ) || false
-                                    : tempSelections[facetName]?.includes(option.value) || false;
+                                        displayText = `$${option.start} - $${option.end} (${option.count})`;
+                                        optionValue = option;
+                                    } else {
+
+                                        displayText = `${option.value} (${option.count})`;
+                                        optionValue = option.value;
+                                    }
+                                    // const isSelected = selectedFacets[facetName]?.values?.includes(option.value) || false;
+                                    // const isPending = tempSelections[facetName]?.includes(option.value) || false;
+                                    const isSelected = isRangeFacet
+                                        ? selectedFacets[facetName]?.values?.some(v =>
+                                            typeof v === 'object' && v.start === option.start && v.end === option.end
+                                        ) || false
+                                        : selectedFacets[facetName]?.values?.includes(option.value) || false;
+
+                                    const isPending = isRangeFacet
+                                        ? tempSelections[facetName]?.some(v =>
+                                            typeof v === 'object' && v.start === option.start && v.end === option.end
+                                        ) || false
+                                        : tempSelections[facetName]?.includes(option.value) || false;
 
 
-                                return (
-                                    <label key={option.value}>
-                                        <input
-                                            type="checkbox"
-                                            checked={isSelected || isPending}
-                                            onChange={(e) => {
-                                                e.stopPropagation();
-                                                handleTempSelection(facetName, optionValue, e.target.checked);
-                                            }}
-                                        />
-                                        {displayText}
-                                    </label>
-                                );
-                            })}
+                                    return (
+                                        <label key={option.value}>
+                                            <input
+                                                type="checkbox"
+                                                checked={isSelected || isPending}
+                                                onChange={(e) => {
+                                                    e.stopPropagation();
+                                                    handleTempSelection(facetName, optionValue, e.target.checked);
+                                                }}
+                                            />
+                                            <span className="facet-value-text">{displayText}</span>
+                                        </label>
+                                    );
+                                })}
                             </>)}
                         </div>
                     );
